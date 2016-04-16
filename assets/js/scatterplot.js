@@ -54,19 +54,10 @@ var xDraw = svg.append("g")
 var yDraw = svg.append("g")
     .attr("class", "axis y-axis");
 
-//// line chart
-//var line = d3.svg.line()
-//    .x(function (d) { if(!isNaN(d[choice1]) && !isNaN(d[choice2])) {return x(d[choice1]);} })
-//    .y(function (d) { if(!isNaN(d[choice1]) && !isNaN(d[choice2])) {return y(d[choice2]);} })
-//    .interpolate("linear");
-//
-//// append path
-//var path = svg.append('g').append("path").attr("class",'line');
-
 // make the tooltip
-//var tip = d3.tip()
-//    .attr('class', 'd3-tip')
-//    .offset([-10, 1]);
+var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 1]);
 
 var table = d3.select("#table");
 table.style("display", "none");
@@ -128,13 +119,11 @@ function updateVisualization() {
         return d[choice2];
     })]);
 
-    //// call the tooltip
-    //tip.html(function(d) {
-    //        //return "<strong>" + d.INSTNM + " versus " + choice2 + "<br></strong> <span style='color:red'>" + d.GOALS +
-    //        //    "</span><strong><br>"+ "EDITION" + "</strong><span style='color:red'>" +"<br>"+ d.EDITION + "</span>";
-    //        return "<strong>" + d.INSTNM + "<br></strong>";
-    //    });
-    //svg.call(tip);
+    // call the tooltip
+    tip.html(function(d) {
+            return "<strong>" + d.INSTNM + "<br></strong>";
+        });
+    svg.call(tip);
 
     var circle = svg.selectAll("circle")
         .data(data);
@@ -155,8 +144,8 @@ function updateVisualization() {
         .attr("r", 4);
 
 
-    //circle.on('mouseover', tip.show)
-    //    .on('mouseout', tip.hide);
+    circle.on('mouseover', tip.show)
+        .on('mouseout', tip.hide);
         //.on("click", showEdition);
 
 
