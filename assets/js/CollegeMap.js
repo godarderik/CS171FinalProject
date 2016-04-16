@@ -18,19 +18,18 @@ CollegeMap.prototype.initVis = function() {
     var vis = this;
 
 
-    L.Icon.Default.imagePath = 'img';
+    L.Icon.Default.imagePath = 'images';
     console.log(this.mapPosition);
-    this.bikeMap = L.map(this.parentElement).setView(this.mapPosition, 13);
+    this.collegeMap = L.map(this.parentElement).setView(this.mapPosition, 5);
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(this.bikeMap);
+    }).addTo(this.collegeMap);
 
     vis.wrangleData();
+   // $.getJSON("data/MBTA-Lines.json", function(data) {
+    //    L.geoJson(data).addTo(vis.bikeMap);
 
-    $.getJSON("data/MBTA-Lines.json", function(data) {
-        L.geoJson(data).addTo(vis.bikeMap);
-
-    });
+    //});
 }
 
 
@@ -55,8 +54,14 @@ CollegeMap.prototype.wrangleData = function() {
 
 CollegeMap.prototype.updateVis = function() {
     var vis = this;
+    console.log(this.data.length)
+
     this.data.forEach(function(item){
-        L.marker([item.lat, item.long]).addTo(vis.bikeMap);
+        if (!(isNaN(item.LATITUDE) || isNaN(item.LONGITUDE)) && item.SAT_AVG_ALL > 1500)
+        {
+            L.marker([item.LATITUDE, item.LONGITUDE]).addTo(vis.collegeMap);
+        }
+
     });
 }
 
