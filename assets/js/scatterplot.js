@@ -21,7 +21,7 @@ var svg = d3.select("#school-visualization").append("svg")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // Initializes Variables
-var data,DATA,start,end, name;
+var data,start,end, name;
 var choice1 = "SAT_AVG_ALL";
 var choice2 = "C150_4";
 
@@ -32,8 +32,6 @@ var x = d3.scale.linear()
 // create y scale
 var y = d3.scale.linear()
     .range([height, 0]);
-
-//var getChoice = function (d) { return d[choice]; };
 
 // x axis function
 var xAxis = d3.svg.axis()
@@ -49,10 +47,18 @@ var yAxis = d3.svg.axis()
 var xDraw = svg.append("g")
     .attr("class", "axis x-axis")
     .attr("transform", "translate(0," + height + ")");
+    //.append("text")
+    //.attr("x", 340)
+    //.attr("y", 50)
+    //.text("SAT SCORE");
 
 // add y axis
 var yDraw = svg.append("g")
     .attr("class", "axis y-axis");
+    //.append("text")
+    //.attr("x", 340)
+    //.attr("y", 50)
+    //.text("Fraction of students who graduate with 150% of expected time");
 
 // make the tooltip
 var tip = d3.tip()
@@ -106,10 +112,10 @@ function loadData() {
 
 // Render visualization
 function updateVisualization() {
+
     // create choice
-    //choice = d3.select("#ranking-type").property("value");
-    //start = d3.select("#start").property("value");
-    //end = d3.select("#end").property("value");
+    choice1 = d3.select("#var1").property("value");
+    choice2 = d3.select("#var2").property("value");
 
     // redefine x and y domain
     x.domain([0, d3.max(data, function (d) {
@@ -131,6 +137,8 @@ function updateVisualization() {
     circle.enter()
         .append("circle");
 
+    // ORANGE IF PRIVATE
+    // PINK IF PUBLIC
     circle.transition()
         .duration(800)
         .attr("cx", function (d) { if(!isNaN(d[choice1]) && !isNaN(d[choice2])) {return x(d[choice1]);} })
@@ -143,22 +151,14 @@ function updateVisualization() {
         })
         .attr("r", 4);
 
-
     circle.on('mouseover', tip.show)
         .on('mouseout', tip.hide);
         //.on("click", showEdition);
-
 
     circle.exit()
         .transition()
         .duration(800)
         .remove();
-
-
-    //// append path
-    //path.transition()
-    //    .duration(800)
-    //    .attr("d", line(data));
 
     xDraw.transition()
         .duration(800)
