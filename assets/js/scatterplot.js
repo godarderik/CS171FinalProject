@@ -33,8 +33,6 @@ var x = d3.scale.linear()
 var y = d3.scale.linear()
     .range([height, 0]);
 
-//var getChoice = function (d) { return d[choice]; };
-
 // x axis function
 var xAxis = d3.svg.axis()
     .scale(x)
@@ -114,10 +112,10 @@ function loadData() {
 
 // Render visualization
 function updateVisualization() {
+
     // create choice
-    //choice = d3.select("#ranking-type").property("value");
-    //start = d3.select("#start").property("value");
-    //end = d3.select("#end").property("value");
+    choice1 = d3.select("#var1").property("value");
+    choice2 = d3.select("#var2").property("value");
 
     // redefine x and y domain
     x.domain([0, d3.max(data, function (d) {
