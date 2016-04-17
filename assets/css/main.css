@@ -28,6 +28,29 @@ h1 .sub-headline {
 	height: 600px;
 }
 
+.select-slider {
+	width : 400px;
+	margin-top: 75px;
+	margin-left: 200px;
+}
+
+.propertyTitle {
+	display:block;
+	width: auto;
+	margin-top: 114px;
+}
+.titleWrap{
+	display:inline-block;
+}
+
+.propertyValue {
+	display:block;
+	width:auto;
+
+}
+.valueWrap {
+	display:inline-block;
+}
 
 /*
 	Telephasic by HTML5 UP

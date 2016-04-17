@@ -2,6 +2,8 @@
  * Created by erikgodard on 4/15/16.
  */
 
+
+var markers = [];
 CollegeMap = function(_parentElement, _data, _mapPosition) {
     this.parentElement = _parentElement;
     this.data = _data;
@@ -20,7 +22,7 @@ CollegeMap.prototype.initVis = function() {
 
     L.Icon.Default.imagePath = 'images';
     console.log(this.mapPosition);
-    this.collegeMap = L.map(this.parentElement).setView(this.mapPosition, 5);
+    this.collegeMap = L.map(this.parentElement).setView(this.mapPosition, 4);
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.collegeMap);
@@ -54,14 +56,19 @@ CollegeMap.prototype.wrangleData = function() {
 
 CollegeMap.prototype.updateVis = function() {
     var vis = this;
-    console.log(this.data.length)
+    console.log(this.data.length);
+
+    for (var i = 0; i < markers.length; ++i)
+    {
+        vis.collegeMap.removeLayer(markers[i]);
+    }
+
+    markers = [];
 
     this.data.forEach(function(item){
-        if (!(isNaN(item.LATITUDE) || isNaN(item.LONGITUDE)) && item.SAT_AVG_ALL > 1500)
-        {
-            L.marker([item.LATITUDE, item.LONGITUDE]).addTo(vis.collegeMap);
-        }
-
+        var marker = L.marker([item.LATITUDE, item.LONGITUDE]);
+        vis.collegeMap.addLayer(marker);
+        markers.push(marker);
     });
 }
 
