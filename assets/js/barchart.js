@@ -22,13 +22,12 @@ var data;
 
 // Create scales and axes
 var x = d3.scale.ordinal()
-    .rangeRoundBands([0, width], .1);
+    .rangeRoundBands([0, width], .5);
 
 var y = d3.scale.linear()
     .rangeRound([height, 0]);
 
-var color = d3.scale.ordinal()
-    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+var color = d3.scale.category20();
 
 var xAxis = d3.svg.axis()
     .scale(x)
@@ -48,7 +47,13 @@ function loadData() {
 
         console.log(data);
 
-        csv.forEach(function(d){
+        x.domain(["Harvard University", "Yale University"]);
+
+        //x.domain(data.map(function(d) {
+        //    return d.INSTNM;
+        //}));
+
+        data.forEach(function(d){
             // Convert numeric values to 'numbers'
             d.UGDS = +d.UGDS;
             d.UGDS_WHITE = +d.UGDS_WHITE;
@@ -65,20 +70,17 @@ function loadData() {
             return key == "UGDS_WHITE" || key == "UGDS_BLACK";
         }));
 
-        //data.forEach(function(d) {
-        //    var y0 = 0;
-        //    d.categories = color.domain().map(function(name) {
-        //        return {name: name, y0: y0, y1: y0 += +d[name]};
-        //    });
-        //    d.total = d.categories[d.categories.length - 1].y1;
-        //});
-        //
-        //data.sort(function(a, b) { return b.total - a.total; });
+        data.forEach(function(d) {
+            if(d.INSTNM == "Harvard University") {
+                var y0 = 0;
+                d.categories = color.domain().map(function (name) {
+                    return {name: name, y0: y0, y1: y0 += +d[name]};
+                });
+                d.total = d.categories[d.categories.length - 1].y1;
+            }
+        });
 
-        x.domain(data.map(function(d) {
-            return d.INSTNM;
-        }))
-            .rangeRoundBands([0, width], .1)
+        data.sort(function(a, b) { return b.total - a.total; });
 
         //y.domain([0, d3.max(data, function(d) {
         //    return d.total;
