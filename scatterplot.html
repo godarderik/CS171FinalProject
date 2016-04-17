@@ -11,6 +11,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 	<link rel="stylesheet" href="assets/css/main.css" />
+	<link rel="stylesheet" href="assets/css/scatterplot.css" />
 	<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 	<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
 </head>
@@ -50,6 +51,32 @@
 					<p>Pick any two variables and plot them against each other to see their relationship!</p>
 				</header>
 			</article>
+			<div class="form-group">
+				<label>Plot</label>
+				<select class="form-control" id="var1" onchange="updateVisualization()">
+					<option value="TUITFTE">Tuition expenditures per student</option>
+					<option value="INEXPFTE">Instruction expenditures divided by students</option>
+					<option value="ADM_RATE_ALL">Total admission rate</option>
+					<option value="SAT_AVG_ALL">Average SAT score</option>
+					<option value="UGDS">Number of undergraduate students</option>
+					<option value="PAR_ED_PCT_1STGEN">Share of students who are first generation</option>
+					<option value="PCTFLOAN">Percentage of students receiving federal loans</option>
+					<option value="GRAD_DEBT_MDN_SUPP">Median debt level for a student who graduates</option>
+					<option value="C150_4">Fraction of students who graduate with 150% of expected time</option>
+				</select>
+				<label>Against</label>
+				<select class="form-control" id="var2" onchange="updateVisualization()">
+					<option value="TUITFTE">Tuition expenditures per student</option>
+					<option value="INEXPFTE">Instruction expenditures divided by students</option>
+					<option value="ADM_RATE_ALL">Total admission rate</option>
+					<option value="SAT_AVG_ALL">Average SAT score</option>
+					<option value="UGDS">Number of undergraduate students</option>
+					<option value="PAR_ED_PCT_1STGEN">Share of students who are first generation</option>
+					<option value="PCTFLOAN">Percentage of students receiving federal loans</option>
+					<option value="GRAD_DEBT_MDN_SUPP">Median debt level for a student who graduates</option>
+					<option value="C150_4">Fraction of students who graduate with 150% of expected time</option>
+				</select>
+			</div>
 
 			<div id="school-visualization"></div>
 
