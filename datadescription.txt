@@ -1,0 +1,40 @@
+INSTNM - Name of institution
+NPCURL - Link to school's website
+LATITUDE - Latitute of school
+LONGITUDE - Longitude of school
+CONTROL - Describes if school is public or private
+TUITFTE - Tuition expenditures per student
+INEXPFTE - Instruction expenditures divided by students
+ADM_RATE_ALL - Total admission rate
+MENONLY - Only men admitted (1 if true, 0 otherwise)
+WOMENONLY - Only women admitted
+HBCU - Historically black college
+SAT_AVG_ALL - Average SAT score
+UGDS - Number of undergraduate students
+UGDS_WHITE - Fraction of undergraduates who are white
+UGDS_BLACK - ""
+UGDS_HISP - ""
+UGDS_ASIAN - ""
+UGDS_AIAN - ""
+UGDS_2MOR - ""
+UGDS_NRA - ""
+UGDS_UNKN - ""
+INC_PCT_LO - Students with family incomes between $0-$30,000
+INC_PCT_M1 - $30,001-$48,000
+INC_PCT_M2 - $48,001-$75,000
+INC_PCT_H1 - $75,001-$110,000
+INC_PCT_H2 - $110,001+
+RET_FT4 - Fraction of students who return after first year
+PAR_ED_PCT_1STGEN - Share of students who are first generation
+PCTFLOAN - Percentage of students receiving federal loans
+PCTPELL－ Percentage of students receiving Pell grants
+GRAD_DEBT_MDN_SUPP - Median debt level for a student who graduates
+C150_4 - Fraction of students who graduate with 150% of expected time
+C150_4_WHITE - Fraction of white students who graduate within 150% of expected time
+C150_4_BLACK - ""
+C150_4_ASIAN - ""
+C150_4_AIAN - ""
+C150_4_NHPI - ""
+C150_4_2MOR - ""
+C150_4_UNKN - ""
+C200_4 - Fraction of students who graduate within 200% of expected time
