@@ -5,7 +5,7 @@
 // SVG drawing area
 var margin = {top: 40, right: 40, bottom: 60, left: 60};
 
-var width = 600 - margin.left - margin.right,
+var width = 700 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
 var svg = d3.select("#barchart-visualization").append("svg")
@@ -20,14 +20,15 @@ loadData();
 // College Data
 var data;
 
+var choice1 = "Harvard University";
+var choice2 = "Yale University";
+
 // Create scales and axes
 var x = d3.scale.ordinal()
-    .rangeRoundBands([0, width], .5);
+    .rangeRoundBands([0, width - 200], .5);
 
 var y = d3.scale.linear()
     .rangeRound([height, 0]);
-
-var color = d3.scale.category20();
 
 var xAxis = d3.svg.axis()
     .scale(x)
@@ -35,8 +36,9 @@ var xAxis = d3.svg.axis()
 
 var yAxis = d3.svg.axis()
     .scale(y)
-    .orient("left")
-    .tickFormat(d3.format(".2s"));
+    .orient("left");
+
+var color = d3.scale.category20();
 
 // Load CSV file
 function loadData() {
@@ -46,10 +48,6 @@ function loadData() {
         data = csv;
 
         console.log(data);
-
-        x.domain(data.map(function(d) {
-            return d.INSTNM;
-        }));
 
         data.forEach(function(d){
             // Convert numeric values to 'numbers'
@@ -64,134 +62,132 @@ function loadData() {
             d.UGDS_UNKN = +d.UGDS_UNKN;
         });
 
-        color.domain(d3.keys(data[0]).filter(function(key) {
-            return key == "UGDS_WHITE" || key == "UGDS_BLACK";
-        }));
-
-        data.forEach(function(d) {
-            var y0 = 0;
-            d.categories = color.domain().map(function (name) {
-                if (!isNaN(d[name])) {
-                    return {name: name, y0: y0, y1: y0 += +d[name]};
-                }
-                else {
-                    return {name: name, y0: y0, y1: y0};
-                }
-            });
-            //if(d.categories[d.categories.length - 1].y1 != null) {
-            //    d.total = d.categories[d.categories.length - 1].y1;
-            //}
-        });
-
-        //data.sort(function(a, b) { return b.total - a.total; });
-
-        //y.domain([0, d3.max(data, function(d) {
-        //    return d.total;
-        //})]);
-
+        x.domain([choice1, choice2]);
         y.domain([0,1]);
 
         svg.append("g")
-            .attr("class", "x axis")
+            .attr("class", "axis x-axis")
             .attr("transform", "translate(0," + height + ")")
             .call(xAxis)
             .append("text")
-            .attr("x", 6)
-            .attr("y", 10)
+            .attr("x", width - 125)
+            .attr("y", -5)
             .attr("dy", ".71em")
             .style("text-anchor", "end")
             .text("School Names");
 
         svg.append("g")
-            .attr("class", "y axis")
+            .attr("class", "axis y-axis")
             .call(yAxis)
             .append("text")
-            .attr("transform", "rotate(-90)")
+            .attr("transform", "rotate(-90) translate(0, -50)")
             .attr("y", 6)
             .attr("dy", ".71em")
             .style("text-anchor", "end")
             .text("Percent of Undergraduates By Race");
 
-        var school = svg.selectAll(".school")
-            .data(data)
-            .enter().append("rect")
-            .attr("class", "school")
-            .attr("transform", function(d) { return "translate(" + x(d.INSTNM) + ",0)"; });
-
-        school.selectAll(".school")
-            .data(function(d) { return d.categories; })
-            .enter().append("rect")
-            .attr("width", x.rangeBand())
-            .attr("y", function(d) {
-                return y(d.y1);
-            })
-            .attr("height", function(d) {
-                console.log(y(d.y0) - y(d.y1));
-                return y(d.y0) - y(d.y1);
-            })
-            .style("fill", function(d) { return color(d.name); });
-
-        var legend = svg.selectAll(".legend")
-            .data(color.domain().slice().reverse())
-            .enter().append("g")
-            .attr("class", "legend")
-            .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
-
-        legend.append("rect")
-            .attr("x", width - 18)
-            .attr("width", 18)
-            .attr("height", 18)
-            .style("fill", color);
-
-        legend.append("text")
-            .attr("x", width - 24)
-            .attr("y", 9)
-            .attr("dy", ".35em")
-            .style("text-anchor", "end")
-            .text(function(d) { return d; });
-
-
         //// Draw the visualization for the first time
-        //updateVisualization();
+        updateVisualization();
     });
 }
 
-//
-//// Render visualization
-//function updateVisualization() {
-//
-//    console.log(data);
 
-    // Get value from select menu
-    //var selectedValue = d3.select("#ranking-type").property("value");
+// Render visualization
+function updateVisualization() {
 
-    // Update scales
+    choice1 = d3.select("#var1").property("value");
+    choice2 = d3.select("#var2").property("value");
 
-    //x.domain([start, end]);
-    //
-    //y.domain(d3.extent(data, function(d) {
-    //    return d[selectedValue];
-    //}));
+    x.domain([choice1, choice2]);
 
-    //// Update axes
-    //var xAxis = d3.svg.axis()
-    //    .scale(x)
-    //    .orient("bottom");
-    //
-    //var yAxis = d3.svg.axis()
-    //    .scale(y)
-    //    .orient("left");
-    //
-    //svg.selectAll("g.x-axis")
-    //    .transition()
-    //    .duration(800)
-    //    .call(xAxis);
-    //
-    //svg.selectAll("g.y-axis")
-    //    .transition()
-    //    .duration(800)
-    //    .call(yAxis);
-//}
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+
+    svg.selectAll("g.x-axis")
+        .transition()
+        .duration(800)
+        .call(xAxis);
+
+    color.domain(d3.keys(data[0]).filter(function(key) {
+        return key == "UGDS_WHITE" || key == "UGDS_BLACK" || key == "UGDS_HISP" || key == "UGDS_ASIAN" ||
+            key == "UGDS_AIAN" || key == "UGDS_2MOR" || key == "UGDS_NRA" || key == "UGDS_UNKN";
+    }));
+
+    data.forEach(function(d) {
+        var y0 = 0;
+        d.categories = color.domain().map(function (name) {
+            if (!isNaN(d[name])) {
+                return {name: name, y0: y0, y1: y0 += +d[name]};
+            }
+            else {
+                return {name: name, y0: y0, y1: y0};
+            }
+        });
+    });
+
+    //data.sort(function(a, b) { return b.total - a.total; });
+
+    //y.domain([0, d3.max(data, function(d) {
+    //    return d.total;
+    //})]);
+
+    var school = svg.selectAll(".school")
+        .data(data)
+        .enter().append("g")
+        .attr("class", "g")
+        .filter(function(d) {
+            return (d.INSTNM == choice1 || d.INSTNM == choice2)
+        })
+        .attr("transform", function(d) {
+            if(!isNaN(x(d.INSTNM))) {
+                return "translate(" + x(d.INSTNM) + ",0)";
+            }
+        });
+
+    school.selectAll("rect")
+        .data(function(d) {
+            return d.categories;
+        })
+        .enter().append("rect")
+        .attr("width", x.rangeBand())
+        .attr("y", function(d) {
+            return y(d.y1);
+        })
+        .attr("height", function(d) {
+            console.log(y(d.y0) - y(d.y1));
+            return y(d.y0) - y(d.y1);
+        })
+        .style("fill", function(d) { return color(d.name); });
+
+    var legend = svg.selectAll(".legend")
+        .data(color.domain().slice().reverse())
+        .enter().append("g")
+        .attr("class", "legend")
+        .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+    legend.append("rect")
+        .attr("x", width - 18)
+        .attr("width", 18)
+        .attr("height", 18)
+        .style("fill", color);
+
+    legend.append("text")
+        .attr("x", width - 24)
+        .attr("y", 9)
+        .attr("dy", ".35em")
+        .style("text-anchor", "end")
+        .text(function(d) {
+            if (d == "UGDS_WHITE") { return "White"; }
+            if (d == "UGDS_BLACK") { return "Black"; }
+            if (d == "UGDS_HISP") { return "Hispanic"; }
+            if (d == "UGDS_ASIAN") { return "Asian"; }
+            if (d == "UGDS_AIAN") { return "American Indian/Alaska Native"; }
+            if (d == "UGDS_2MOR") { return "Two or more races"; }
+            if (d == "UGDS_NRA") { return "Non-resident aliens"; }
+            if (d == "UGDS_UNKN") { return "Race unknown"; }
+        });
+}
 
 
 //// Show details for a specific FIFA World Cup
