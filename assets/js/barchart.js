@@ -47,11 +47,9 @@ function loadData() {
 
         console.log(data);
 
-        x.domain(["Harvard University", "Yale University"]);
-
-        //x.domain(data.map(function(d) {
-        //    return d.INSTNM;
-        //}));
+        x.domain(data.map(function(d) {
+            return d.INSTNM;
+        }));
 
         data.forEach(function(d){
             // Convert numeric values to 'numbers'
@@ -71,20 +69,27 @@ function loadData() {
         }));
 
         data.forEach(function(d) {
-            if(d.INSTNM == "Harvard University") {
-                var y0 = 0;
-                d.categories = color.domain().map(function (name) {
+            var y0 = 0;
+            d.categories = color.domain().map(function (name) {
+                if (!isNaN(d[name])) {
                     return {name: name, y0: y0, y1: y0 += +d[name]};
-                });
-                d.total = d.categories[d.categories.length - 1].y1;
-            }
+                }
+                else {
+                    return {name: name, y0: y0, y1: y0};
+                }
+            });
+            //if(d.categories[d.categories.length - 1].y1 != null) {
+            //    d.total = d.categories[d.categories.length - 1].y1;
+            //}
         });
 
-        data.sort(function(a, b) { return b.total - a.total; });
+        //data.sort(function(a, b) { return b.total - a.total; });
 
         //y.domain([0, d3.max(data, function(d) {
         //    return d.total;
         //})]);
+
+        y.domain([0,1]);
 
         svg.append("g")
             .attr("class", "x axis")
@@ -109,16 +114,21 @@ function loadData() {
 
         var school = svg.selectAll(".school")
             .data(data)
-            .enter().append("g")
-            .attr("class", "g")
+            .enter().append("rect")
+            .attr("class", "school")
             .attr("transform", function(d) { return "translate(" + x(d.INSTNM) + ",0)"; });
 
-        school.selectAll("rect")
+        school.selectAll(".school")
             .data(function(d) { return d.categories; })
             .enter().append("rect")
             .attr("width", x.rangeBand())
-            .attr("y", function(d) { return y(d.y1); })
-            .attr("height", function(d) { return y(d.y0) - y(d.y1); })
+            .attr("y", function(d) {
+                return y(d.y1);
+            })
+            .attr("height", function(d) {
+                console.log(y(d.y0) - y(d.y1));
+                return y(d.y0) - y(d.y1);
+            })
             .style("fill", function(d) { return color(d.name); });
 
         var legend = svg.selectAll(".legend")
