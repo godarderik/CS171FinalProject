@@ -11,6 +11,46 @@ var criteria = {
     ADM_RATE_ALL: {
         min: 0,
         max: 100
+    },
+    SAT_AVG_ALL: {
+        min: 400,
+        max: 1600
+    },
+    TUITFTE: {
+        min: 0,
+        max: 70000
+    },
+    INEXPFTE: {
+        min: 0,
+        max: 50000
+    },
+    UGDS: {
+        min: 0,
+        max: 30000
+    },
+    RET_FT4: {
+        min: 0,
+        max: 100
+    },
+    PCTFLOAN: {
+        min: 0,
+        max: 100
+    },
+    PCTPELL: {
+        min: 0,
+        max: 100
+    },
+    GRAD_DEBT_MDN_SUPP: {
+        min: 0,
+        max: 200000
+    },
+    C150_4: {
+        min: 0,
+        max: 100
+    },
+    C200_4: {
+        min: 0,
+        max: 100
     }
 
 };
@@ -23,50 +63,34 @@ loadData();
 
 
 function loadData() {
-   /* $('.valueWrap').children('div').each(function(i) {
+    $('.valueWrap').children('div').each(function(i) {
         $(this).rangeSlider({
-            bounds:
-            {
-                min: 0,
-                max: 100
-            },
-            defaultValues:
-            {
-                min: 0,
-                max: 100
-            },
+            bounds: criteria[this.id],
+            defaultValues: criteria[this.id],
             step: 1
         });
-    });*/
-
-    $("#ADM_RATE_ALL").rangeSlider({
-        bounds:
-        {
-            min: 0,
-            max: 100
-        },
-        defaultValues:
-        {
-            min: 0,
-            max: 100
-        },
-        step: 1
     });
+    var a = Object.keys(criteria);
 
-    $("#ADM_RATE_ALL").bind("valuesChanged", function(e, data){
-        updateCriteria(e,data);
-        filterData();
+    for (var i = 0; i < a.length; ++i)
+    {
+        $("#" + a[i]).bind("valuesChanged", function(e, data){
+            updateCriteria(e,data);
+            filterData();
+            //upper limit for map, switch to chloropleth if greater
 
-        //upper limit for map, switch to chloropleth if greater
-        if (currData.length > 500)
-        {
 
-        }
-        else
-        {
             updateVis();
-        }
-    });
+
+        });
+    };
+
+    //d3.select("public").on("change", updateVisualization);
+    //d3.select("private").on("change", updateVisualization);
+    //d3.select("public").on("womenonly", updateVisualization);
+    //d3.select("public").on("hbcu", updateVisualization);
+    //d3.select("public").on("change", updateVisualization);
+
 
 
 
@@ -116,16 +140,13 @@ function loadData() {
             d.C200_4 = +d.C200_4;
             d.CONTROL = +d.CONTROL;
 
-            if (i < 1000 && !isNaN(d.LONGITUDE) && !isNaN(d.LATITUDE))
+            if (!isNaN(d.LONGITUDE) && !isNaN(d.LATITUDE))
             {
                 return d;
             }
 
         });
         // Store csv data in global variable
-
-        console.log(data);
-
         createVis();
     });
 
@@ -151,7 +172,9 @@ function filterData()
         for (var i = 0; i < keys.length; ++i)
         {
             var val = item[keys[i]];
-            out = !isNaN(val) && val >= criteria[keys[i]]["min"]/100.0 && val <= criteria[keys[i]]["max"]/100.0;
+            var mult = (keys[i] == "SAT_AVG_ALL" || keys[i] == "TUITFTE" || keys[i] == "INEXPFTE" ||
+            keys[i] == "UGDS" || keys[i] == "GRAD_DEBT_MDN_SUPP") ? (1) : 100.0;
+            out = !isNaN(val) && val >= criteria[keys[i]]["min"]/mult && val <= criteria[keys[i]]["max"]/mult;
             if (out == false)
             {
                 break;
@@ -162,6 +185,14 @@ function filterData()
             return item;
         }
     });
+    if (currData.length > 200)
+    {
+        stationMap.shouldDraw = false;
+    }
+    else
+    {
+        stationMap.shouldDraw = true;
+    }
     stationMap.data = currData;
    console.log(currData.length);
 }
@@ -171,6 +202,7 @@ function createVis() {
     // TO-DO: INSTANTIATE VISUALIZATION
 
     stationMap = new CollegeMap("college-map", allData, [42.360082, -91.058880]);
+    filterData();
     stationMap.initVis();
 
 }
