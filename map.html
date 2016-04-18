@@ -13,6 +13,9 @@
 	<link rel="stylesheet" href="assets/css/main.css" />
 	<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 	<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+    <link rel="stylesheet" href="assets/css/iThing-min.css" type="text/css" />
+    <link rel="stylesheet" href="assets/css/leaflet.css">
+    <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body class="no-sidebar">
 <div id="page-wrapper">
@@ -47,15 +50,76 @@
 			<article id="content">
 				<header>
 					<h2>College Mapper</h2>
-					<p>Lorem ipsum dolor sit amet consectetur et sed adipiscing elit
-						dolor neque semper.</p>
+					<p>Choose the attributes of the college you are looking for.</p>
 				</header>
 			</article>
 
-			<div id = "map-visualization"></div>
+
+            <br>
+
+
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id = "public"> Public
+                        </label>
+                    </div>
+
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id = "private"> Private
+                        </label>
+                    </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id = "womenony"> Women Only
+                    </label>
+                    </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id = "hbcu"> Historically Black
+                    </label>
+                </div>
+                <div class = "slider-options">
+                    <div class = "titleWrap">
+                        <label class = "propertyTitle"> Admission Rate: </label>
+                        <label class = "propertyTitle">Average SAT Score:   </label>
+                        <label class = "propertyTitle">Tuition Per Student:  </label>
+                        <label class = "propertyTitle">Instruction Expenditures Per Student:  </label>
+                        <label class = "propertyTitle">Number of Undergraduates: </label>
+                        <label class = "propertyTitle">Percent of Students Returning After First Year</label>
+                        <label class = "propertyTitle">Percent of Students Receiving Federal Loans</label>
+                        <label class = "propertyTitle">Percent of Students Receiving Pell Grants</label>
+                        <label class = "propertyTitle">Median Debt Level for Graduates</label>
+                        <label class = "propertyTitle">Fraction of Students Who Graduate in Six Years:</label>
+                        <label class = "propertyTitle">Fraction of Students Who Graduate in Eight Years:</label>
+
+                    </div>
+                    <div class = valueWrap>
+                        <div class = "select-slider" id = "ADM_RATE_ALL"></div>
+                        <div class = "select-slider" id = "SAT_AVG_ALL"></div>
+                        <div class = "select-slider" id = "TUITFTE"></div>
+                        <div class = "select-slider" id = "INEXPFTE"></div>
+                        <div class = "select-slider" id = "UGDS"></div>
+                        <div class = "select-slider" id = "RET_FT4"></div>
+                        <div class = "select-slider" id = "PCTFLOAN"></div>
+                        <div class = "select-slider" id = "PCTPELL"></div>
+                        <div class = "select-slider" id = "GRAD_DEBT_MDN_SUPP"></div>
+                        <div class = "select-slider" id = "C150_4"></div>
+                        <div class = "select-slider" id = "C200_4"></div>
+                    </div>
+
+
+
+                </div>
+            <h3 id = "map-title">Here are the colleges we found for you.</h3>
+            <div id = "college-map"><div id = "warning"></div></div>
 
 		</div>
+
+
 	</div>
+
+
 
 
 	<!-- Footer -->
@@ -75,13 +139,20 @@
 <!-- Scripts -->
 
 <script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/d3.min.js"></script
 <script src="assets/js/jquery.dropotron.min.js"></script>
 <script src="assets/js/skel.min.js"></script>
 <script src="assets/js/util.js"></script>
 <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+<script src="assets/js/jquery-ui.min.js"></script>>
+<script src="assets/js/leaflet.js"></script>
+<script src="assets/js/d3.tip.js"></script>
+<script src="assets/js/jQDateRangeSlider-min.js"></script>
+<script src="assets/js/lodash.js"></script>
+<script src="assets/js/us-states.js"></script>
 <script src="assets/js/main.js"></script>
-<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script src="assets/js/collegemapper.js"></script>
+<script src="assets/js/collegemap.js"></script>
+<script src="assets/js/map.js"></script>
 
 </body>
 </html>
