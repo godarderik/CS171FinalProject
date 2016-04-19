@@ -55,9 +55,29 @@ var criteria = {
 
 };
 
+
 // Start application by loading the data
 loadData();
 
+$("#public").change(function(){
+    filterData();
+    updateVis();
+});
+
+$("#private").change(function(){
+    filterData();
+    updateVis();
+});
+
+$("#womenonly").change(function(){
+    filterData();
+    updateVis();
+});
+
+$("#hbcu").change(function(){
+    filterData();
+    updateVis();
+});
 
 
 
@@ -165,6 +185,14 @@ function filterData()
 {
     var keys = Object.keys(criteria);
 
+    //checkbox
+    var pub = ($("#public").is(":checked")) ? "1" : "0";
+    var priv = ($("#private").is(":checked")) ? "1" : "0";
+    var womenonly = ($("#womenonly").is(":checked")) ? "1" : "0";
+    var hbcu = ($("#hbcu").is(":checked")) ? "1" : "0";
+
+    console.log(pub);
+
     currData = allData.filter(function(item)
     {
         out = true;
@@ -180,12 +208,14 @@ function filterData()
                 break;
             }
         }
+
+        out = out && ((item["CONTROL"] == "1" && pub == "1") ||((item["CONTROL"] == "2" || item["CONTROL"] == "3") && priv == "1")|| (item["WOMENONLY"] == womenonly && womenonly == "1") || (item["HBCU"] == hbcu && hbcu == "1"));
         if (out == true)
         {
             return item;
         }
     });
-    if (currData.length > 200)
+    if (currData.length > 300)
     {
         stationMap.shouldDraw = false;
     }
