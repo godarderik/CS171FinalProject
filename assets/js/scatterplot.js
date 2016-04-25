@@ -47,18 +47,10 @@ var yAxis = d3.svg.axis()
 var xDraw = svg.append("g")
     .attr("class", "axis x-axis")
     .attr("transform", "translate(0," + height + ")");
-    //.append("text")
-    //.attr("x", 340)
-    //.attr("y", 50)
-    //.text("SAT SCORE");
 
 // add y axis
 var yDraw = svg.append("g")
     .attr("class", "axis y-axis");
-    //.append("text")
-    //.attr("x", 340)
-    //.attr("y", 50)
-    //.text("Fraction of students who graduate with 150% of expected time");
 
 // make the tooltip
 var tip = d3.tip()
@@ -124,6 +116,16 @@ function updateVisualization() {
     y.domain([0, d3.max(data, function (d) {
         return d[choice2];
     })]);
+
+    xDraw.append("text")
+    .attr("x", 250)
+    .attr("y", 50)
+    .text(choice1);
+
+    yDraw.append("text")
+        .attr("x", 0)
+        .attr("y", 200)
+        .text(choice2);
 
     // call the tooltip
     tip.html(function(d) {
