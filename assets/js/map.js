@@ -84,11 +84,22 @@ $("#hbcu").change(function(){
 
 function loadData() {
     $('.valueWrap').children('div').each(function(i) {
-        $(this).rangeSlider({
-            bounds: criteria[this.id],
-            defaultValues: criteria[this.id],
-            step: 1
-        });
+       // $(this).rangeSlider({
+       //     bounds: criteria[this.id],
+       //     defaultValues: criteria[this.id],
+       //     step: 1
+       // });
+            $(this).slider({
+                range: true,
+                min: criteria[this.id]["min"],
+                max: criteria[this.id]["max"],
+                values: [criteria[this.id]["min"], criteria[this.id]["max"]],
+                slide: function (event, ui) {
+                    updateCriteria(event, ui);
+                    filterData();
+                    updateVis();
+                }
+            });
     });
     var a = Object.keys(criteria);
 
@@ -100,7 +111,7 @@ function loadData() {
             //upper limit for map, switch to chloropleth if greater
 
 
-            updateVis();
+
 
         });
     };
@@ -174,11 +185,10 @@ function loadData() {
 
 }
 
-function updateCriteria(e,data)
+function updateCriteria(event, e)
 {
-    var basicValues = $(e.currentTarget).rangeSlider("values");
-    criteria[e.currentTarget.id].min = basicValues['min'];
-    criteria[e.currentTarget.id].max = basicValues['max'];
+    criteria[event.target.id].min = e.values["0"];
+    criteria[event.target.id].max = e.values["1"];
 }
 
 function filterData()

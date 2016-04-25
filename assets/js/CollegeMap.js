@@ -166,7 +166,7 @@ CollegeMap.prototype.updateVis = function() {
     {
         this.data.forEach(function(item){
             var marker = L.marker([item.LATITUDE, item.LONGITUDE]);
-            marker.bindPopup(item.INSTNM + "<br><a href=school.html?s=" + item.INSTNM + ">More Information</a>" ).openPopup();
+            marker.bindPopup(item.INSTNM + "<br><a href=school.html?s=" + item.UNITID + ">More Information</a>" ).openPopup();
             vis.collegeMap.addLayer(marker);
             markers.push(marker);
         });
