@@ -14,6 +14,7 @@
 	<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 	<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
     <link rel="stylesheet" href="assets/css/iThing-min.css" type="text/css" />
+    <link rel="stylesheet" href="assets/css/jquery-ui.css" type="text/css" />
     <link rel="stylesheet" href="assets/css/leaflet.css">
     <link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -53,34 +54,11 @@
 					<p>Choose the attributes of the college you are looking for.</p>
 				</header>
 			</article>
+            <div id = "header-text"> The colors in the map above are shown in proportion of the number of schools fitting your criteria in each state. Once you have filtered out enough results, individual schools will appear.</div>
 
             <div id = "college-map"><div id = "warning"></div></div>
 
 
-            <br>
-
-
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" id = "public" checked> Public
-                        </label>
-                    </div>
-
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" id = "private" checked> Private
-                        </label>
-                    </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" id = "womenonly" checked > Women Only
-                    </label>
-                    </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" id = "hbcu" checked> Historically Black
-                    </label>
-                </div>
                 <div class = "slider-options">
                     <div class = "titleWrap">
                         <label class = "propertyTitle"> Admission Rate: </label>
@@ -109,13 +87,30 @@
                         <div class = "select-slider" id = "C150_4"></div>
                         <div class = "select-slider" id = "C200_4"></div>
                     </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id = "public" checked> Public
+                        </label>
+                    </div>
 
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id = "private" checked> Private
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id = "womenonly" checked > Women Only
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id = "hbcu" checked> Historically Black
+                        </label>
+                    </div>
 
 
                 </div>
-            <h3 id = "map-title">Here are the colleges we found for you.</h3>
-
-
 		</div>
 
 
