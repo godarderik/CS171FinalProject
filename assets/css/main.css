@@ -82,6 +82,31 @@ div.ui-datepicker{
 	font-size:10px;
 }
 
+.arc text {
+	font: 10px sans-serif;
+	text-anchor: middle;
+}
+
+.arc path {
+	stroke: #fff;
+}
+
+path.slice{
+	stroke-width:2px;
+}
+
+polyline{
+	opacity: .3;
+	stroke: black;
+	stroke-width: 2px;
+	fill: none;
+}
+
+.vis {
+	margin:auto;
+	width: 80%;
+}
+
 /*
 	Telephasic by HTML5 UP
 	html5up.net | @n33co

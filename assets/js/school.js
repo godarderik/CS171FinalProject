@@ -2,9 +2,73 @@
  * Created by erikgodard on 4/13/16.
  */
 
-loadData();
+var width = 1200,
+    height = 450,
+    radius = Math.min(width, height) / 2;
+
+var color = d3.scale.category20();
+
+var pie = d3.layout.pie()
+    .value(function(d) { return d})
+    .sort(null);
+
+var arc = d3.svg.arc()
+    .outerRadius(radius * 0.8)
+    .innerRadius(radius * 0.4);
+
+var outerArc = d3.svg.arc()
+    .innerRadius(radius * 0.9)
+    .outerRadius(radius * 0.9);
+
+var svgDem = d3.select("#school-visualization").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("class", "vis")
+    .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+var parDem = d3.select("#school-visualization").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("class", "vis")
+    .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+var incDem = d3.select("#school-visualization").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("class", "vis")
+    .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+svgDem.append("g")
+    .attr("class", "slices");
+svgDem.append("g")
+    .attr("class", "labels");
+svgDem.append("g")
+    .attr("class", "lines");
+
+parDem.append("g")
+    .attr("class", "slices");
+parDem.append("g")
+    .attr("class", "labels");
+parDem.append("g")
+    .attr("class", "lines");
+
+incDem.append("g")
+    .attr("class", "slices");
+incDem.append("g")
+    .attr("class", "labels");
+incDem.append("g")
+    .attr("class", "lines");
 
 allData = {};
+demoData = {};
+incData = {};
+parData = {};
+
+
+loadData();
+
+
 
 //Taken from http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
 function getParameterByName(name, url) {
@@ -65,6 +129,9 @@ function loadData() {
             d.CONTROL = +d.CONTROL;
 
             allData[d.UNITID] = d;
+            demoData[d.UNITID] = [ d.UGDS_WHITE,d.UGDS_BLACK, d.UGDS_HISP, d.UGDS_ASIAN, d.UGDS_AIAN, d.UGDS_2MOR, d.UGDS_UNKN];
+            incData[d.UNITID] =  [d.INC_PCT_LO, d.INC_PCT_M1, d.INC_PCT_M2, d.INC_PCT_H1, d.INC_PCT_H2 ];
+            parData[d.UNITID] = [d.PAR_ED_PCT_MS, d.PAR_ED_PCT_HS ,d.PAR_ED_PCT_PS];
 
             if (!isNaN(d.LONGITUDE) && !isNaN(d.LATITUDE))
             {
@@ -81,12 +148,24 @@ function loadData() {
 
 
 }
+var demArr = ["White", "Black", "Hispanic", "Asian","American Indian", "Two or more", "Unknown"];
+var parArr = ["Middle School", "High School","Post Secondary" ];
+var incArr = ["$0-$30,000", "$30,001-$48,000", "$48,001-$75,000", "$75,001-$110,000", "$110,001+"];
 
+var demKey = function(d,k){ return demArr[k]; };
+var parKey = function(d,k){ return parArr[k]; };
+var incKey = function(d,k){ return incArr[k]; };
 
+function midAngle(d){
+    return d.startAngle + (d.endAngle - d.startAngle)/2;
+}
 function createVis()
 {
-    console.log(getParameterByName("s"));
     var school = allData[getParameterByName("s")];
+    var demo = demoData[getParameterByName("s")];
+    var par = parData[getParameterByName("s")];
+    var inc = incData[getParameterByName("s")];
+
 
     $("#school-name-header").html(school.INSTNM);
 
@@ -102,7 +181,113 @@ function createVis()
     $('#data-table').append('<tr><td>Percentage of Students Returning After First Year</td><td>' + Math.round(10000 * school.RET_FT4)/100 + '%</td></tr>');
     $('#data-table').append('<tr><td>Admissions Rate</td><td>' + Math.round(10000 *  school.ADM_RATE_ALL)/100 + '%</td></tr>');
 
+    var make = true;
+    for (var key in demo) {
+        if (isNaN(demo[key]))
+        {
+            make = false;
+        }
 
 
+    }
+    if (make)
+    {
+        makePieChart(svgDem, demo, demKey);
+    }
+    make = true;
+    for (var key in par) {
+        if (isNaN(par[key]))
+        {
+            make = false;
+        }
 
+
+    }
+    if (make)
+    {
+        makePieChart(parDem, par, parKey);
+    }
+
+    make = true;
+    for (var key in inc) {
+        if (isNaN(inc[key]))
+        {
+            make = false;
+        }
+
+
+    }
+    if (make)
+    {
+        makePieChart(incDem, inc, incKey);
+    }
 }
+
+
+function makePieChart(svg, data,key)
+{
+    var path = svg.datum(data).selectAll("path")
+        .data(pie)
+        .enter().append("path")
+        .attr("fill", function(d, i) { return color(i); })
+        .attr("d", arc)
+        .each(function(d) { this._current = d; }); // store the initial angles
+
+    var text = svg.select(".labels").selectAll("text")
+        .data(pie(data), key);
+
+    text.enter()
+        .append("text")
+        .attr("dy", ".35em")
+        .text(function(d,k) {
+            return key(d,k);
+        });
+
+    text.transition().duration(1000)
+        .attrTween("transform", function(d) {
+            this._current = this._current || d;
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function(t) {
+                var d2 = interpolate(t);
+                var pos = outerArc.centroid(d2);
+                pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
+                return "translate("+ pos +")";
+            };
+        })
+        .styleTween("text-anchor", function(d){
+            this._current = this._current || d;
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function(t) {
+                var d2 = interpolate(t);
+                return midAngle(d2) < Math.PI ? "start":"end";
+            };
+        });
+
+    text.exit()
+        .remove();
+
+    var polyline = svg.select(".lines").selectAll("polyline")
+        .data(pie(data), key);
+
+    polyline.enter()
+        .append("polyline");
+
+    polyline.transition().duration(1000)
+        .attrTween("points", function(d){
+            this._current = this._current || d;
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function(t) {
+                var d2 = interpolate(t);
+                var pos = outerArc.centroid(d2);
+                pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
+                return [arc.centroid(d2), outerArc.centroid(d2), pos];
+            };
+        });
+
+    polyline.exit()
+        .remove();
+}
+
