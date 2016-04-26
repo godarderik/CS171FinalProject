@@ -20,19 +20,19 @@ var outerArc = d3.svg.arc()
     .innerRadius(radius * 0.9)
     .outerRadius(radius * 0.9);
 
-var svgDem = d3.select("#school-visualization").append("svg")
+var svgDem = d3.select("#school1-visualization").append("svg")
     .attr("width", width)
     .attr("height", height)
     .attr("class", "vis")
     .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-var parDem = d3.select("#school-visualization").append("svg")
+var parDem = d3.select("#school2-visualization").append("svg")
     .attr("width", width)
     .attr("height", height)
     .attr("class", "vis")
     .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-var incDem = d3.select("#school-visualization").append("svg")
+var incDem = d3.select("#school3-visualization").append("svg")
     .attr("width", width)
     .attr("height", height)
     .attr("class", "vis")
@@ -194,6 +194,10 @@ function createVis()
     {
         makePieChart(svgDem, demo, demKey);
     }
+    else
+    {
+        $("#race").css("display","none");
+    }
     make = true;
     for (var key in par) {
         if (isNaN(par[key]))
@@ -206,6 +210,10 @@ function createVis()
     if (make)
     {
         makePieChart(parDem, par, parKey);
+    }
+    else
+    {
+        $("#education").css("display","none");
     }
 
     make = true;
@@ -220,6 +228,10 @@ function createVis()
     if (make)
     {
         makePieChart(incDem, inc, incKey);
+    }
+    else
+    {
+        $("#income").css("display","none");
     }
 }
 
