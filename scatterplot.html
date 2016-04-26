@@ -76,8 +76,12 @@
 					<option value="GRAD_DEBT_MDN_SUPP">Median debt level for a student who graduates</option>
 					<option value="C150_4">Fraction of students who graduate with 150% of expected time</option>
 				</select>
+				<label>Color dots based on...</label>
+				<select class="form-control" id="categorical" onchange = "updateVisualization()">
+					<option value="PUBPRI">Public Schools (pink) vs. Private Schools (orange)</option>
+					<option value="GENDER">Women Only (pink), Men only (blue), Admit all (green)</option>
+				</select>
 			</div>
-
 			<div id="school-visualization"></div>
 
 		</div>

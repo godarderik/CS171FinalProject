@@ -2,13 +2,7 @@
  * Created by erikgodard on 4/13/16.
  */
 
-// one axis that's a measure of success
-// one axis that is a factor that can affect that
-// like average SAT score v. 4 year graduation rate
-
-
 // SVG drawing area
-
 var margin = {top: 40, right: 40, bottom: 60, left: 60};
 
 var width = 600 - margin.left - margin.right,
@@ -21,7 +15,7 @@ var svg = d3.select("#school-visualization").append("svg")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // Initializes Variables
-var data,start,end, name;
+var data,start,end, name, category;
 var choice1 = "SAT_AVG_ALL";
 var choice2 = "C150_4";
 
@@ -57,8 +51,13 @@ var tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 1]);
 
-var table = d3.select("#table");
-table.style("display", "none");
+// make the legend
+var legend = svg.append("g")
+    .attr("class", "legend")
+    .attr("x", width - 65)
+    .attr("y", 25)
+    .attr("height", 100)
+    .attr("width", 100);
 
 // Initialize data
 loadData();
@@ -94,6 +93,7 @@ function loadData() {
             d.C200_4 = +d.C200_4;
             d.CONTROL = +d.CONTROL;
         });
+
         // Store csv data in global variable
         data = csv;
 
@@ -108,6 +108,7 @@ function updateVisualization() {
     // create choice
     choice1 = d3.select("#var1").property("value");
     choice2 = d3.select("#var2").property("value");
+    category = d3.select("#categorical").property("value");
 
     // redefine x and y domain
     x.domain([0, d3.max(data, function (d) {
@@ -117,15 +118,93 @@ function updateVisualization() {
         return d[choice2];
     })]);
 
-    xDraw.append("text")
-    .attr("x", 250)
-    .attr("y", 50)
-    .text(choice1);
 
-    yDraw.append("text")
-        .attr("x", 0)
-        .attr("y", 200)
-        .text(choice2);
+    // clear axis and make a new one
+    //xDraw.append("text")
+    //    .attr("x", 220)
+    //    .attr("y", 50)
+    //    .text(function(){
+    //        if (choice1 == "TUITFTE")
+    //        {
+    //            return "Tuition Expenditures per Student";
+    //        }
+    //        else if (choice1 == "INEXPFTE")
+    //        {
+    //            return "Instruction expenditures divided by students";
+    //        }
+    //        else if (choice1 == "ADM_RATE_ALL")
+    //        {
+    //            return "Total admission rate";
+    //        }
+    //        else if (choice1 == "SAT_AVG_ALL")
+    //        {
+    //            return "Average SAT score";
+    //        }
+    //        else if (choice1 == "UGDS")
+    //        {
+    //            return "Number of Undergraduate Students";
+    //        }
+    //        else if (choice1 == "PAR_ED_PCT_1STGEN")
+    //        {
+    //            return "Percent of students that are first generation";
+    //        }
+    //        else if (choice1 == "PCTFLOAN")
+    //        {
+    //            return "Percent of students receiving federal loans";
+    //        }
+    //        else if (choice1 == "GRAD_DEBT_MDN_SUPP")
+    //        {
+    //            return "Median debt for graduating students";
+    //        }
+    //        else if (choice1 == "C150_4")
+    //        {
+    //            return "Fraction of students who graduate with 150% of expected time";
+    //        }
+    //});
+
+    // clear axis and make a new one
+    //yDraw.append("text")
+    //    .attr("x", -300)
+    //    .attr("y", -52)
+    //    .attr("transform", "rotate(-90)")
+    //    .text(function(){
+    //        if (choice2 == "TUITFTE")
+    //        {
+    //            return "Tuition Expenditures per Student";
+    //        }
+    //        else if (choice2 == "INEXPFTE")
+    //        {
+    //            return "Instruction expenditures divided by students";
+    //        }
+    //        else if (choice2 == "ADM_RATE_ALL")
+    //        {
+    //            return "Total admission rate";
+    //        }
+    //        else if (choice2 == "SAT_AVG_ALL")
+    //        {
+    //            return "Average SAT score";
+    //        }
+    //        else if (choice2 == "UGDS")
+    //        {
+    //            return "Number of Undergraduate Students";
+    //        }
+    //        else if (choice2 == "PAR_ED_PCT_1STGEN")
+    //        {
+    //            return "Percent of students that are first generation";
+    //        }
+    //        else if (choice2 == "PCTFLOAN")
+    //        {
+    //            return "Percent of students receiving federal loans";
+    //        }
+    //        else if (choice2 == "GRAD_DEBT_MDN_SUPP")
+    //        {
+    //            return "Median debt for graduating students";
+    //        }
+    //        else if (choice2 == "C150_4")
+    //        {
+    //            return "Fraction of students who graduate with 150% of expected time";
+    //        }
+    //    });
 
     // call the tooltip
     tip.html(function(d) {
@@ -139,23 +218,35 @@ function updateVisualization() {
     circle.enter()
         .append("circle");
 
-    // ORANGE IF PRIVATE
-    // PINK IF PUBLIC
+    // adds circles
     circle.transition()
         .duration(800)
-        .attr("cx", function (d) { if(!isNaN(d[choice1]) && !isNaN(d[choice2])) {return x(d[choice1]);} })
-        .attr("cy", function (d) { if(!isNaN(d[choice1]) && !isNaN(d[choice2])) {return y(d[choice2]);} })
+        .attr("cx", function (d) { if(!isNaN(d[choice1]) && !isNaN(d[choice2]) && d[choice1] != 0 && d[choice2] != 0) {return x(d[choice1]);} })
+        .attr("cy", function (d) { if(!isNaN(d[choice1]) && !isNaN(d[choice2]) && d[choice1] != 0 && d[choice2] != 0) {return y(d[choice2]);} })
         .attr("fill", function(d){
-            if(d.CONTROL == 1)
-            {return "pink";}
-            else
-            {return "orange";}
+            if (category == "PUBPRI"){
+                if(d.CONTROL == 1)
+                {return "pink";}
+                else
+                {return "orange";}
+            }
+            if (category == "GENDER"){
+                if (d.MENONLY == 1){
+                    return "blue";
+                }
+                if (d.WOMENONLY == 1){
+                    return "pink";
+                }
+                else {
+                    return "#BCED91";
+                }
+            }
         })
         .attr("r", 4);
 
+
     circle.on('mouseover', tip.show)
         .on('mouseout', tip.hide);
-        //.on("click", showEdition);
 
     circle.exit()
         .transition()
@@ -171,17 +262,3 @@ function updateVisualization() {
         .call(yAxis);
 
 }
-
-//
-//// Show details for a specific FIFA World Cup
-//function showEdition(d){
-//    table.style("display",null);
-//    d3.select("#EDITION").text(d.EDITION);
-//    d3.select("#WINNER").text(d.WINNER);
-//    d3.select("#GOALS").text(d.GOALS);
-//    d3.select("#AVGOALS").text(d.AVERAGE_GOALS);
-//    d3.select("#MATCHES").text(d.MATCHES);
-//    d3.select("#TEAMS").text(d.TEAMS);
-//    d3.select("#AVATTENDANCE").text(d.AVERAGE_ATTENDANCE);
-//
-//}
