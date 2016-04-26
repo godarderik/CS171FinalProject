@@ -55,20 +55,51 @@ var criteria = {
 
 };
 
+
 // Start application by loading the data
 loadData();
 
+$("#public").change(function(){
+    filterData();
+    updateVis();
+});
+
+$("#private").change(function(){
+    filterData();
+    updateVis();
+});
+
+$("#womenonly").change(function(){
+    filterData();
+    updateVis();
+});
+
+$("#hbcu").change(function(){
+    filterData();
+    updateVis();
+});
 
 
 
 
 function loadData() {
     $('.valueWrap').children('div').each(function(i) {
-        $(this).rangeSlider({
-            bounds: criteria[this.id],
-            defaultValues: criteria[this.id],
-            step: 1
-        });
+       // $(this).rangeSlider({
+       //     bounds: criteria[this.id],
+       //     defaultValues: criteria[this.id],
+       //     step: 1
+       // });
+            $(this).slider({
+                range: true,
+                min: criteria[this.id]["min"],
+                max: criteria[this.id]["max"],
+                values: [criteria[this.id]["min"], criteria[this.id]["max"]],
+                slide: function (event, ui) {
+                    updateCriteria(event, ui);
+                    filterData();
+                    updateVis();
+                }
+            });
     });
     var a = Object.keys(criteria);
 
@@ -80,7 +111,7 @@ function loadData() {
             //upper limit for map, switch to chloropleth if greater
 
 
-            updateVis();
+
 
         });
     };
@@ -154,16 +185,23 @@ function loadData() {
 
 }
 
-function updateCriteria(e,data)
+function updateCriteria(event, e)
 {
-    var basicValues = $(e.currentTarget).rangeSlider("values");
-    criteria[e.currentTarget.id].min = basicValues['min'];
-    criteria[e.currentTarget.id].max = basicValues['max'];
+    criteria[event.target.id].min = e.values["0"];
+    criteria[event.target.id].max = e.values["1"];
 }
 
 function filterData()
 {
     var keys = Object.keys(criteria);
+
+    //checkbox
+    var pub = ($("#public").is(":checked")) ? "1" : "0";
+    var priv = ($("#private").is(":checked")) ? "1" : "0";
+    var womenonly = ($("#womenonly").is(":checked")) ? "1" : "0";
+    var hbcu = ($("#hbcu").is(":checked")) ? "1" : "0";
+
+    console.log(pub);
 
     currData = allData.filter(function(item)
     {
@@ -180,12 +218,14 @@ function filterData()
                 break;
             }
         }
+
+        out = out && ((item["CONTROL"] == "1" && pub == "1") ||((item["CONTROL"] == "2" || item["CONTROL"] == "3") && priv == "1")|| (item["WOMENONLY"] == womenonly && womenonly == "1") || (item["HBCU"] == hbcu && hbcu == "1"));
         if (out == true)
         {
             return item;
         }
     });
-    if (currData.length > 200)
+    if (currData.length > 300)
     {
         stationMap.shouldDraw = false;
     }

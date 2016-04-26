@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Telephasic by HTML5 UP</title>
+		<title>Education Calibration</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -28,7 +28,7 @@
 						<nav id="nav">
 							<ul>
 								<li><a href="scatterplot.html">Make Scatterplot</a></li>
-								<li><a href="school.html">Visualize School</a></li>
+								<li><a href="school.html?s=166027">Visualize School</a></li>
 								<li class="break">
 								<li><a href="barchart.html">Make Segmented Barchart</a></li>
 								<li><a href="map.html">College Mapper</a></li>
@@ -46,13 +46,19 @@
 						<!-- Content -->
 							<article id="content">
 								<header>
-									<h2>School Visualization</h2>
-									<p>Lorem ipsum dolor sit amet consectetur et sed adipiscing elit
-									dolor neque semper.</p>
+									<h2 id = "school-name-header"></h2>
 								</header>
 							</article>
+						<table id = "data-table">
 
-						<div id = "school-visualization"></div>
+						</table>
+
+						<h3 id = "race">Student Body by Race</h3>
+						<div id = "school1-visualization"></div>
+						<h3 id = "education">Student Body by Parent's Level of Education</h3>
+						<div id = "school2-visualization"></div>
+						<h3 id = "income">Student Body by Parent's Income</h3>
+						<div id = "school3-visualization"></div>
 
 						</div>
 					</div>
@@ -77,6 +83,7 @@
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.dropotron.min.js"></script>
 			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/accounting.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 			<script src="assets/js/main.js"></script>
