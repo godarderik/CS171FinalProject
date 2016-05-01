@@ -248,6 +248,8 @@ function updateVisualization() {
     circle.on('mouseover', tip.show)
         .on('mouseout', tip.hide);
 
+    circle.on('click', transition)
+
     circle.exit()
         .transition()
         .duration(800)
@@ -261,4 +263,9 @@ function updateVisualization() {
         .duration(800)
         .call(yAxis);
 
+}
+
+function transition(e,n)
+{
+    document.location.href = "school.html?s=" + e["UNITID"];
 }
