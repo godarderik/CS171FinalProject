@@ -2,8 +2,12 @@
  * Created by erikgodard on 4/15/16.
  */
 
+var maxDrops = 300;
+
+// Data containers
 var allData = [];
 var currData = [];
+
 // Variable for the visualization instance
 var stationMap;
 
@@ -83,23 +87,19 @@ $("#hbcu").change(function(){
 
 
 function loadData() {
+    // Bind event handlers to each slider
     $('.select-slider').each(function(i) {
-       // $(this).rangeSlider({
-       //     bounds: criteria[this.id],
-       //     defaultValues: criteria[this.id],
-       //     step: 1
-       // });
-            $(this).slider({
-                range: true,
-                min: criteria[this.id]["min"],
-                max: criteria[this.id]["max"],
-                values: [criteria[this.id]["min"], criteria[this.id]["max"]],
-                slide: function (event, ui) {
-                    updateCriteria(event, ui);
-                    filterData();
-                    updateVis();
-                }
-            }).bind("change", function(e, data){
+        $(this).slider({
+            range: true,
+            min: criteria[this.id]["min"],
+            max: criteria[this.id]["max"],
+            values: [criteria[this.id]["min"], criteria[this.id]["max"]],
+            slide: function (event, ui) {
+                updateCriteria(event, ui);
+                filterData();
+                updateVis();
+            }
+        }).bind("change", function(e, data){
             updateCriteria(e,data);
             filterData();
             console.log("here");
@@ -111,7 +111,8 @@ function loadData() {
         label: 'label'
     })
     });
-    var a = Object.keys(criteria);
+
+
     // Load CSV file
     d3.csv("data/data.csv", function(data) {
         allData = data.filter(function(d,i) {
@@ -178,6 +179,7 @@ function updateCriteria(event, e)
     criteria[event.target.id].max = e.values["1"];
 }
 
+//Place the data subject to the current constraints into currData
 function filterData()
 {
     var keys = Object.keys(criteria);
@@ -209,7 +211,7 @@ function filterData()
             return item;
         }
     });
-    if (currData.length > 300)
+    if (currData.length > maxDrops)
     {
         stationMap.shouldDraw = false;
     }
@@ -221,8 +223,6 @@ function filterData()
 }
 
 function createVis() {
-
-    // TO-DO: INSTANTIATE VISUALIZATION
 
     stationMap = new CollegeMap("college-map", allData, [42.360082, -91.058880]);
     filterData();

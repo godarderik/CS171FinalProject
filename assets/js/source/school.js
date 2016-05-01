@@ -2,7 +2,7 @@
  * Created by erikgodard on 4/13/16.
  */
 
-//pie chart visualization
+// pie chart visualization 
 var width = 750,
     height = 450,
     radius = Math.min(width, height) / 2;
@@ -19,6 +19,9 @@ var arc = d3.svg.arc()
 var outerArc = d3.svg.arc()
     .innerRadius(radius * 0.9)
     .outerRadius(radius * 0.9);
+var pieColor = d3.scale.category20();
+////////////////////////////
+
 
 // bar chart visualization
 var margin = {top: 40, right: 40, bottom: 60, left: 60};
@@ -41,13 +44,11 @@ var yAxis = d3.svg.axis()
     .scale(y)
     .orient("left");
 
-var pieColor = d3.scale.category20();
-
 var color = d3.scale.category20();
 var color2 = d3.scale.category20();
 var color3 = d3.scale.category20();
 
-
+////////////////////////////
 
 //svg containers
 var svgDem;
@@ -55,6 +56,8 @@ var parDem;
 var incDem;
 
 var orgData;
+var orgData1;
+var orgData2;
 
 
 //data
@@ -65,9 +68,6 @@ parData = {};
 schools = [];
 dataBySchool = {};
 
-
-loadData();
-
 //selected schools
 var schoolPrimary;
 var schoolSecondary;
@@ -75,6 +75,8 @@ var schoolSecondary;
 //For barchart compatibility
 var choice1;
 var choice2;
+
+loadData();
 
 
 //Taken from http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
@@ -90,12 +92,9 @@ function getParameterByName(name, url) {
 
 function loadData() {
     // Load CSV file
-
     schoolPrimary = getParameterByName("s");
-    numSchools = 1;
-    console.log(schoolPrimary);
+
     d3.csv("data/data.csv", function(data) {
-        console.log(schoolPrimary);
         data = data.filter(function(d,i) {
             // Convert numeric values to 'numbers'
             d.TUITFTE = +d.TUITFTE;
@@ -140,6 +139,7 @@ function loadData() {
             d.C200_4 = +d.C200_4;
             d.CONTROL = +d.CONTROL;
 
+            //write to our data variables
             allData[d.UNITID] = d;
             demoData[d.UNITID] = [ d.UGDS_WHITE,d.UGDS_BLACK, d.UGDS_HISP, d.UGDS_ASIAN, d.UGDS_AIAN, d.UGDS_2MOR, d.UGDS_UNKN];
             incData[d.UNITID] =  [d.INC_PCT_LO, d.INC_PCT_M1, d.INC_PCT_M2, d.INC_PCT_H1, d.INC_PCT_H2 ];
@@ -153,15 +153,13 @@ function loadData() {
                 return d;
             }
 
-
-
         });
     
     orgData = data;
     orgData1 = data;
     orgData2 = data;
 
-    //potential problem here
+    
     color.domain(d3.keys(orgData[0]).filter(function(key) {
         return key == "UGDS_WHITE" || key == "UGDS_BLACK" || key == "UGDS_HISP" || key == "UGDS_ASIAN" ||
             key == "UGDS_AIAN" || key == "UGDS_2MOR" || key == "UGDS_NRA" || key == "UGDS_UNKN";
@@ -215,7 +213,7 @@ function loadData() {
     });
 
 
-    ///
+    ///initialize autocomplete boxes
     $( "#compareschool" ).autocomplete({
       source: schools,
       select: function (a, b) {
@@ -235,6 +233,7 @@ function loadData() {
         }
     });
 
+    //second box
     $( "#school-name-header" ).autocomplete({
       source: schools,
       select: function (a, b) {
@@ -254,12 +253,15 @@ function loadData() {
         }
     });
 
-     $( "#school-name-header" ).val(allData[schoolPrimary].INSTNM);
+    //substitute value of first school into first box
+    $( "#school-name-header" ).val(allData[schoolPrimary].INSTNM);
 
         createTable();
         updateVisualizations();
     });
 }
+
+//map order to output text
 var demArr = ["White", "Black", "Hispanic", "Asian","American Indian", "Two or more", "Unknown"];
 var parArr = ["Middle School", "High School","Post Secondary" ];
 var incArr = ["$0-$30,000", "$30,001-$48,000", "$48,001-$75,000", "$75,001-$110,000", "$110,001+"];
@@ -268,10 +270,12 @@ var demKey = function(d,k){ return demArr[k]; };
 var parKey = function(d,k){ return parArr[k]; };
 var incKey = function(d,k){ return incArr[k]; };
 
+//pie chart function
 function midAngle(d){
     return d.startAngle + (d.endAngle - d.startAngle)/2;
 }
 
+//takes in a school name and outputs array of values for table
 function schoolToArray(school)
 {
     var schoolPrimaryArray = [];
@@ -293,33 +297,40 @@ function schoolToArray(school)
     return schoolPrimaryArray;
 }
 
+//create table of values for selected schools
 function createTable()
 {
-    console.log(schoolPrimary, schoolSecondary);
+    //return if none are selected
     if (schoolPrimary == undefined && schoolSecondary == undefined) return;
     
+    //output arrays
     var schoolPrimaryArray = schoolToArray(allData[schoolPrimary]);
     var schoolSecondaryArray = schoolToArray(allData[schoolSecondary]);
 
+    //clear table
     $("#data-table").empty();
 
+    //if two school selected
     if (schoolPrimary !== undefined && schoolSecondary !== undefined)
     {
         $('#data-table').append('<tr><th></th><th id = "school1">' + allData[schoolPrimary].INSTNM + '</th><th id = "school1">' + allData[schoolSecondary].INSTNM + '</th></tr>');
     }
-    else
+    //if one schools selected
+    else 
     {   
         var str = schoolPrimary == undefined ? allData[schoolSecondary].INSTNM  : allData[schoolPrimary].INSTNM;
         $('#data-table').append('<tr><th></th><th id = "school1">' + str+ '</th></tr>');
     }
 
+    //want to fill the second spot if there is only one school
     if (schoolPrimaryArray[0] == "")
     {
         var t = schoolPrimaryArray;
         schoolPrimaryArray = schoolSecondaryArray;
         schoolSecondaryArray = t;
     }
-    
+
+    //populate table
     $('#data-table').append('<tr><td>School Type</td><td>' + schoolPrimaryArray[0] + '</td><td>' + schoolSecondaryArray[0] + '</td></tr>');
     $('#data-table').append('<tr><td>Total Undergraduates</td><td>' + schoolPrimaryArray[1] + '</td><td>' + schoolSecondaryArray[1] + '</td></tr>');
     $('#data-table').append('<tr><td>Tuition</td><td>' + schoolPrimaryArray[2] + '</td><td>' + schoolSecondaryArray[2] + '</td></tr>');
@@ -333,6 +344,8 @@ function createTable()
     $('#data-table').append('<tr><td>Admissions Rate</td><td>' + schoolPrimaryArray[10] + '</td><td>' + schoolSecondaryArray[10] + '</td></tr>');
 
 }
+
+//create pie charts for a given school
 function createVis(schoolType)
 {
     var demo = demoData[schoolType];
@@ -445,7 +458,7 @@ function createVis(schoolType)
     }
 }
 
-
+//d3 pie chart function
 function makePieChart(svg, data,key)
 {
     var path = svg.datum(data).selectAll("path")
@@ -513,7 +526,7 @@ function makePieChart(svg, data,key)
         .remove();
 }
 
-
+//create pie chart update table and dispatch to update visualizaiton function
 function updateSchool(schoolNumber, schoolData)
 {
     if (schoolNumber == 0) schoolPrimary    = schoolData.UNITID;
@@ -524,6 +537,7 @@ function updateSchool(schoolNumber, schoolData)
 
 }
 
+//add bar chart or pie chart, depending on number of selected schools
 function updateVisualizations()
 {
 
@@ -541,6 +555,7 @@ function updateVisualizations()
     }
 }
 
+//call makeBarchart with appropriate parameters for each bar chart
 function makeBarcharts()
 {
     x.domain([choice1, choice2]);
@@ -672,6 +687,7 @@ function makeBarchart(tag, xtitle, ytitle, type, mapFunc,colorFunc,data)
 
 }
 
+//map data names to display values for legend
 function raceMap(d)
 {
     if (d == "UGDS_WHITE") { return "White"; }

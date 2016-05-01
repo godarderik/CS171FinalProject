@@ -4,6 +4,7 @@
 
 
 var markers = [];
+
 CollegeMap = function(_parentElement, _data, _mapPosition) {
     this.parentElement = _parentElement;
     this.data = _data;
@@ -13,6 +14,7 @@ CollegeMap = function(_parentElement, _data, _mapPosition) {
 }
 
 var geoJSON;
+
 //Taken from https://gist.github.com/mshafrir/2646763
 var states = {
     "AL": "Alabama",
@@ -95,28 +97,6 @@ CollegeMap.prototype.initVis = function() {
     }).addTo(this.collegeMap);
 
 
-    vis.wrangleData();
-
-
-
-    // $.getJSON("data/MBTA-Lines.json", function(data) {
-    //    L.geoJson(data).addTo(vis.bikeMap);
-
-    //});
-}
-
-
-/*
- *  Data wrangling
- */
-
-CollegeMap.prototype.wrangleData = function() {
-    var vis = this;
-
-    // Currently no data wrangling/filtering needed
-    // vis.displayData = vis.data;
-
-    // Update the visualization
     vis.updateVis();
 }
 
@@ -126,8 +106,8 @@ CollegeMap.prototype.wrangleData = function() {
  */
 
 CollegeMap.prototype.updateVis = function() {
+
     var vis = this;
-    console.log(this.data.length);
 
     for (var i = 0; i < markers.length; ++i)
     {
@@ -138,6 +118,7 @@ CollegeMap.prototype.updateVis = function() {
     {
         return a["STABBR"];
     });
+
     var out = _.countBy(statesCounts);
     var outHash = {};
 
@@ -145,6 +126,7 @@ CollegeMap.prototype.updateVis = function() {
     {
         outHash[states[i]] = out[i];
     }
+
     function style(feature) {
         return {
             fillColor: getColor(outHash[feature.properties.name]),
@@ -155,13 +137,16 @@ CollegeMap.prototype.updateVis = function() {
             fillOpacity: 0.7
         };
     }
+
     if (geoJSON !== undefined)
     {
         geoJSON.clearLayers();
     }
+
     geoJSON = L.geoJson(statesData, {style: style});
     geoJSON.addTo(this.collegeMap);
     markers = [];
+    
     if (this.shouldDraw)
     {
         this.data.forEach(function(item){
@@ -174,6 +159,7 @@ CollegeMap.prototype.updateVis = function() {
 
 }
 
+//Map concentrations to colors
 function getColor(d) {
     return d > 300 ? '#800026' :
         d > 100  ? '#BD0026' :
