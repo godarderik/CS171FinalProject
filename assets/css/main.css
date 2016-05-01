@@ -23,11 +23,6 @@ h1 .sub-headline {
 	font-weight: 300;
 }
 
-#warning {
-	width: 50%;
-	margin: 0 auto;
-	z-index: 2;
-}
 
 #college-map {
 	width: 80%;
@@ -36,41 +31,29 @@ h1 .sub-headline {
 	z-index: 1;
 }
 
-
 .slider-options
 {
 	width: 80%;
 	margin: auto;
 }
-#header-text {
-	width: 80%;
-	margin:auto;
-}
 
 .select-slider {
-	width : 330px;
+	width : 300px;
 	margin-top: 36px;
-	margin-left: 200px;
+	margin-left: 100px;
 }
 
 .propertyTitle {
 	display:block;
-	width: auto;
-	margin-bottom: 20px;
+	margin-top: 20px;
 }
 .titleWrap{
-	margin-top: 30px;
-	display:inline-block;
-}
-
-.propertyValue {
-	display:block;
-	width:auto;
-
+	margin-top: 50px;
 }
 .valueWrap {
-	display:inline-block;
+	margin-top: 48px;
 }
+
 
 
 #map-title
@@ -102,9 +85,11 @@ polyline{
 	fill: none;
 }
 
-.vis {
-	margin:auto;
-	width: 80%;
+
+.header-div
+{
+	width : 80%;
+	margin: auto;
 }
 
 #school1 {
@@ -3154,4 +3139,4 @@ polyline{
 				margin-bottom: 1em;
 			}
 
-	}
+			}
