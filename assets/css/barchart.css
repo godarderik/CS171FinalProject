@@ -10,3 +10,8 @@
 .text {
     font-size: 11px;
 }
+svg
+{
+    margin: auto;
+    display: block;
+}

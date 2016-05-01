@@ -41,6 +41,8 @@ var yAxis = d3.svg.axis()
     .scale(y)
     .orient("left");
 
+var pieColor = d3.scale.category20();
+
 var color = d3.scale.category20();
 var color2 = d3.scale.category20();
 var color3 = d3.scale.category20();
@@ -174,6 +176,8 @@ function loadData() {
         return key == "PAR_ED_PCT_MS" || key == "PAR_ED_PCT_PS" || key == "PAR_ED_PCT_HS";
     }));
 
+
+
     orgData.forEach(function (d) {
         var y0 = 0;
         d.categories = color.domain().map(function (name) {
@@ -209,6 +213,8 @@ function loadData() {
             }
         });
     });
+
+
     ///
     $( "#compareschool" ).autocomplete({
       source: schools,
@@ -344,6 +350,7 @@ function createVis(schoolType)
     }
     if (make)
     {
+        $("#school1-visualization").append("<h3 id = 'race'>Student Body by Race</h3>");
         svgDem = d3.select("#school1-visualization").append("svg")
         .attr("width", width)
         .attr("height", height)
@@ -359,6 +366,7 @@ function createVis(schoolType)
         
         svgDem.append("g")
         .attr("class", "lines");
+        
         
         makePieChart(svgDem, demo, demKey);
     }
@@ -377,6 +385,7 @@ function createVis(schoolType)
     }
     if (make)
     {
+        $("#school2-visualization").append("<h3 id = 'education'>Student Body by Parent's Level of Education</h3>");
         parDem = d3.select("#school2-visualization").append("svg")
         .attr("width", width)
         .attr("height", height)
@@ -411,6 +420,7 @@ function createVis(schoolType)
     }
     if (make)
     {
+        $("#school3-visualization").append("<h3 id = 'income'>Student Body by Parent's Income</h3>");
         incDem = d3.select("#school3-visualization").append("svg")
         .attr("width", width)
         .attr("height", height)
@@ -441,7 +451,7 @@ function makePieChart(svg, data,key)
     var path = svg.datum(data).selectAll("path")
         .data(pie)
         .enter().append("path")
-        .attr("fill", function(d, i) { return color(i); })
+        .attr("fill", function(d, i) { return pieColor(i); })
         .attr("d", arc)
         .each(function(d) { this._current = d; }); // store the initial angles
 
@@ -536,9 +546,16 @@ function makeBarcharts()
     x.domain([choice1, choice2]);
     y.domain([0,1]);
 
+    $("#school1-visualization").append("<h3 id = 'race'>Student Body by Race</h3>");
     makeBarchart("#school1-visualization","School Names", "Percent of Undergraduates By Race", 0,raceMap,color,orgData);
-    makeBarchart("#school2-visualization","School Names", "Percent of Undergraduates By Family Income", 1,incMap,color2,orgData1);
-    makeBarchart("#school3-visualization","School Names", "Percent of Undergraduates By Parents' Highest Education Level",2, edMap,color3,orgData2);
+    
+    $("#school2-visualization").append("<h3 id = 'education'>Student Body by Parent's Level of Education</h3>");
+    makeBarchart("#school2-visualization","School Names", "Percent of Undergraduates By Parents' Highest Education Level",2, edMap,color3,orgData2);
+
+    $("#school3-visualization").append("<h3 id = 'income'>Student Body by Parent's Income</h3>");
+    makeBarchart("#school3-visualization","School Names", "Percent of Undergraduates By Family Income", 1,incMap,color2,orgData1);
+
+    
 
 }
 
