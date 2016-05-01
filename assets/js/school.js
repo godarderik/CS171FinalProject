@@ -3,7 +3,7 @@
  */
 
 //pie chart visualization
-var width = 1200,
+var width = 750,
     height = 450,
     radius = Math.min(width, height) / 2;
 
@@ -659,7 +659,7 @@ function makeBarchart(tag, xtitle, ytitle, type, mapFunc,colorFunc,data)
         .attr("x", barWidth - 18)
         .attr("width", 18)
         .attr("height", 18)
-        .style("fill", color);
+        .style("fill", colorFunc);
 
     legend.append("text")
         .attr("x", barWidth - 24)
