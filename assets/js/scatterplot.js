@@ -220,7 +220,6 @@ function updateVisualization() {
 
     // adds circles
     circle.transition()
-        .duration(800)
         .attr("cx", function (d) { if(!isNaN(d[choice1]) && !isNaN(d[choice2]) && d[choice1] != 0 && d[choice2] != 0) {return x(d[choice1]);} })
         .attr("cy", function (d) { if(!isNaN(d[choice1]) && !isNaN(d[choice2]) && d[choice1] != 0 && d[choice2] != 0) {return y(d[choice2]);} })
         .attr("fill", function(d){
