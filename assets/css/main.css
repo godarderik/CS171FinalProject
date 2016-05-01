@@ -85,9 +85,11 @@ polyline{
 	fill: none;
 }
 
-.vis {
-	margin:auto;
-	width: 80%;
+
+.header-div
+{
+	width : 80%;
+	margin: auto;
 }
 
 #school1 {
