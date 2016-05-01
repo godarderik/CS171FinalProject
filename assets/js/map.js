@@ -83,7 +83,7 @@ $("#hbcu").change(function(){
 
 
 function loadData() {
-    $('.valueWrap').children('div').each(function(i) {
+    $('.select-slider').each(function(i) {
        // $(this).rangeSlider({
        //     bounds: criteria[this.id],
        //     defaultValues: criteria[this.id],
