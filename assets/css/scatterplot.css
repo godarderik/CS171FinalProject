@@ -13,3 +13,8 @@
 button {
     margin: 0 auto;
 }
+
+label  {
+    font-weight: bold;
+    font-size: 16;
+}
