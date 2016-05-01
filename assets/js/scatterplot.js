@@ -5,8 +5,8 @@
 // SVG drawing area
 var margin = {top: 40, right: 40, bottom: 60, left: 60};
 
-var width = 600 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+var width = 800 - margin.left - margin.right,
+    height = 600 - margin.top - margin.bottom;
 
 var svg = d3.select("#school-visualization").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -106,9 +106,9 @@ function loadData() {
 function updateVisualization() {
 
     // create choice
-    choice1 = d3.select("#var1").property("value");
-    choice2 = d3.select("#var2").property("value");
-    category = d3.select("#categorical").property("value");
+    choice1 = $('input[name=var1]:checked').val()
+    choice2 = $('input[name=var2]:checked').val()
+    category = $('input[name=var3]:checked').val()
 
     // redefine x and y domain
     x.domain([0, d3.max(data, function (d) {

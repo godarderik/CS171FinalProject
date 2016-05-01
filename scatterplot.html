@@ -10,6 +10,7 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="assets/css/main.css" />
 	<link rel="stylesheet" href="assets/css/scatterplot.css" />
 	<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
@@ -52,40 +53,45 @@
 				</header>
 			</article>
 			<div class="form-group">
+				<div class = "col-md-6">
 				<label>X-Axis </label>
 				<br>
-					<input type = "radio" name = "var1" value="TUITFTE">Tuition expenditures per student</input><br>
-					<input type = "radio" name = "var1" value="INEXPFTE">Instruction expenditures divided by students</input><br>
-					<input type = "radio" name = "var1" value="ADM_RATE_ALL">Total admission rate</input><br>
-					<input type = "radio" name = "var1" value="SAT_AVG_ALL">Average SAT score</input><br>
-					<input type = "radio" name = "var1" value="UGDS">Number of undergraduate students</input><br>
-					<input type = "radio" name = "var1" value="PAR_ED_PCT_1STGEN">Share of students who are first generation</input><br>
-					<input type = "radio" name = "var1" value="PCTFLOAN">Percentage of students receiving federal loans</input><br>
-					<input type = "radio" name = "var1" value="GRAD_DEBT_MDN_SUPP">Median debt level for a student who graduates</input><br>
-					<input type = "radio" name = "var1" value="C150_4">Fraction of students who graduate with 150% of expected time</input><br>
+					<input type = "radio" name = "var1" onChange = "updateVisualization()" value="TUITFTE">Tuition expenditures per student</input><br>
+					<input type = "radio" name = "var1" onChange = "updateVisualization()" value="INEXPFTE">Instruction expenditures divided by students</input><br>
+					<input type = "radio" name = "var1" onChange = "updateVisualization()" value="ADM_RATE_ALL">Total admission rate</input><br>
+					<input type = "radio" name = "var1" onChange = "updateVisualization()" checked = "checked" value="SAT_AVG_ALL">Average SAT score</input><br>
+					<input type = "radio" name = "var1" onChange = "updateVisualization()" value="UGDS">Number of undergraduate students</input><br>
+					<input type = "radio" name = "var1" onChange = "updateVisualization()" value="PAR_ED_PCT_1STGEN">Share of students who are first generation</input><br>
+					<input type = "radio" name = "var1" onChange = "updateVisualization()" value="PCTFLOAN">Percentage of students receiving federal loans</input><br>
+					<input type = "radio" name = "var1" onChange = "updateVisualization()" value="GRAD_DEBT_MDN_SUPP">Median debt level for a student who graduates</input><br>
+					<input type = "radio" name = "var1" onChange = "updateVisualization()" value="C150_4">Fraction of students who graduate with 150% of expected time</input><br>
 				<br>
+				</div>
+				<div class = "col-md-6">
+
 				<label>Y-Axis </label>
 				<br>
-					<input type = "radio" name = "var2" value="TUITFTE">Tuition expenditures per student</input><br>
-					<input type = "radio" name = "var2" value="INEXPFTE">Instruction expenditures divided by students</input><br>
-					<input type = "radio" name = "var2" value="ADM_RATE_ALL">Total admission rate</input><br>
-					<input type = "radio" name = "var2" value="SAT_AVG_ALL">Average SAT score</input><br>
-					<input type = "radio" name = "var2" value="UGDS">Number of undergraduate students</input><br>
-					<input type = "radio" name = "var2" value="PAR_ED_PCT_1STGEN">Share of students who are first generation</input><br>
-					<input type = "radio" name = "var2" value="PCTFLOAN">Percentage of students receiving federal loans</input><br>
-					<input type = "radio" name = "var2" value="GRAD_DEBT_MDN_SUPP">Median debt level for a student who graduates</input><br>
-					<input type = "radio" name = "var2" value="C150_4">Fraction of students who graduate with 150% of expected time</input><br>
-
+					<input type = "radio" name = "var2" onChange = "updateVisualization()" value="TUITFTE">Tuition expenditures per student</input><br>
+					<input type = "radio" name = "var2" onChange = "updateVisualization()" value="INEXPFTE">Instruction expenditures divided by students</input><br>
+					<input type = "radio" name = "var2" onChange = "updateVisualization()" value="ADM_RATE_ALL">Total admission rate</input><br>
+					<input type = "radio" name = "var2" onChange = "updateVisualization()" value="SAT_AVG_ALL">Average SAT score</input><br>
+					<input type = "radio" name = "var2" onChange = "updateVisualization()" value="UGDS">Number of undergraduate students</input><br>
+					<input type = "radio" name = "var2" onChange = "updateVisualization()" value="PAR_ED_PCT_1STGEN">Share of students who are first generation</input><br>
+					<input type = "radio" name = "var2" onChange = "updateVisualization()" value="PCTFLOAN">Percentage of students receiving federal loans</input><br>
+					<input type = "radio" name = "var2" onChange = "updateVisualization()" value="GRAD_DEBT_MDN_SUPP">Median debt level for a student who graduates</input><br>
+					<input type = "radio" name = "var2" onChange = "updateVisualization()" checked = "checked" value="C150_4">Fraction of students who graduate with 150% of expected time</input><br>
+				</div>
 				<br>
 				
-				<label>Dot Colors</label>
-				<br>
-					<input type = "radio" name = "var3" value="PUBPRI">Public Schools (pink) vs. Private Schools (orange)</input><br>
-					<input type = "radio" name = "var3" value="GENDER">Women only (pink), Men only (blue), Admit all (green)</input><br>
-					<input type = "radio" name = "var3" value="NONE">None</input><br>
+				
 			</div>
 			<div id="school-visualization"></div>
 
+			<label>Dot Colors</label>
+				<br>
+					<input type = "radio" name = "var3" onChange = "updateVisualization()" value="PUBPRI">Public Schools (pink) vs. Private Schools (orange)</input><br>
+					<input type = "radio" name = "var3" onChange = "updateVisualization()" value="GENDER">Women only (pink), Men only (blue), Admit all (green)</input><br>
+					<input type = "radio" name = "var3" onChange = "updateVisualization()" value="NONE">None</input><br>
 		</div>
 	</div>
 
@@ -108,6 +114,7 @@
 
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/jquery.dropotron.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/skel.min.js"></script>
 <script src="assets/js/util.js"></script>
 <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
