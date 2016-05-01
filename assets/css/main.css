@@ -107,6 +107,14 @@ polyline{
 	width: 80%;
 }
 
+#school1 {
+	font-weight: bold;
+}
+
+#school2 {
+	font-weight: bold;
+}
+
 #scale-slider.ui-slider {
   border-radius: 0px;
   background: #c7cdd5;

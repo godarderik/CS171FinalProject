@@ -64,10 +64,15 @@ allData = {};
 demoData = {};
 incData = {};
 parData = {};
+schools = [];
+dataBySchool = {};
 
 
 loadData();
 
+var schoolPrimary;
+var schoolSecondary;
+var numSchools = 0;
 
 
 //Taken from http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
@@ -83,7 +88,12 @@ function getParameterByName(name, url) {
 
 function loadData() {
     // Load CSV file
+
+    schoolPrimary = getParameterByName("s");
+    numSchools = 1;
+    console.log(schoolPrimary);
     d3.csv("data/data.csv", function(data) {
+        console.log(schoolPrimary);
         data = data.filter(function(d,i) {
             // Convert numeric values to 'numbers'
             d.TUITFTE = +d.TUITFTE;
@@ -133,6 +143,9 @@ function loadData() {
             incData[d.UNITID] =  [d.INC_PCT_LO, d.INC_PCT_M1, d.INC_PCT_M2, d.INC_PCT_H1, d.INC_PCT_H2 ];
             parData[d.UNITID] = [d.PAR_ED_PCT_MS, d.PAR_ED_PCT_HS ,d.PAR_ED_PCT_PS];
 
+            dataBySchool[d.INSTNM] = d;
+            schools.push(d.INSTNM);
+
             if (!isNaN(d.LONGITUDE) && !isNaN(d.LATITUDE))
             {
                 return d;
@@ -141,12 +154,39 @@ function loadData() {
 
 
         });
-        // Store csv data in global variable
+    $( "#compareschool" ).autocomplete({
+      source: schools,
+      select: function (a, b) {
+        $(this).val(b.item.value);
+        if ( this.value in dataBySchool)
+        {
+            updateSchool(0, dataBySchool[this.value]);
+        }
+    }
+    }).attr('size',60);
+
+
+
+    $( "#school-name-header" ).autocomplete({
+      source: schools,
+      select: function (a, b) {
+        $(this).val(b.item.value);
+        if ( this.value in dataBySchool)
+        {
+            updateSchool(0, dataBySchool[this.value]);
+        }
+    }
+    }).attr('size',60);
+
+     $( "#school-name-header" ).val(allData[schoolPrimary].INSTNM);
+
+        createTable();
         createVis();
     });
 
 
 
+    
 }
 var demArr = ["White", "Black", "Hispanic", "Asian","American Indian", "Two or more", "Unknown"];
 var parArr = ["Middle School", "High School","Post Secondary" ];
@@ -159,27 +199,63 @@ var incKey = function(d,k){ return incArr[k]; };
 function midAngle(d){
     return d.startAngle + (d.endAngle - d.startAngle)/2;
 }
+
+function schoolToArray(school)
+{
+    var schoolPrimaryArray = [];
+    
+    if (school == undefined) return ["","","","","","","","","","","",""];
+
+    schoolPrimaryArray.push((school.CONTROL == 0 ? "Public" : "Private"));
+    schoolPrimaryArray.push(school.UGDS);
+    schoolPrimaryArray.push(accounting.formatMoney(school.TUITFTE));
+    schoolPrimaryArray.push(school.SAT_AVG_ALL);
+    schoolPrimaryArray.push(Math.round(10000 * school.C150_4)/100);
+    schoolPrimaryArray.push(Math.round(10000 *  school.C200_4)/100);
+    schoolPrimaryArray.push(Math.round(10000* school.PCTPELL)/100);
+    schoolPrimaryArray.push(Math.round(10000 * school.PCTFLOAN)/100);
+    schoolPrimaryArray.push(accounting.formatMoney(school.GRAD_DEBT_MDN_SUPP));
+    schoolPrimaryArray.push(Math.round(10000 * school.RET_FT4)/100);
+    schoolPrimaryArray.push(Math.round(10000 *  school.ADM_RATE_ALL)/100);
+
+    return schoolPrimaryArray;
+}
+
+function createTable()
+{
+    console.log(schoolPrimary, schoolSecondary);
+    if (schoolPrimary == undefined && schoolSecondary == undefined) return;
+    
+    var schoolPrimaryArray = schoolToArray(allData[schoolPrimary]);
+    var schoolSecondaryArray = schoolToArray(allData[schoolSecondary]);
+
+    if (schoolPrimary !== undefined && schoolSecondary !== undefined)
+    {
+        $('#data-table').append('<tr><th></th><th id = "school1">' + allData[schoolPrimary].INSTNM + '</th><th id = "school1">' + allData[schoolSecondary].INSTNM + '</th></tr>');
+    }
+    else
+    {
+        $('#data-table').append('<tr><th>D</th><th id = "school1">' + schoolPrimary == undefined ? allData[schoolSecondary].INSTNM : allData[schoolPrimary].INSTNM + '</th></tr>');
+    }
+    
+    $('#data-table').append('<tr><td>School Type</td><td>' + schoolPrimaryArray[0] + schoolSecondaryArray[0] + '</td></tr>');
+    $('#data-table').append('<tr><td>Total Undergraduates</td><td>' + schoolPrimaryArray[1] + schoolSecondaryArray[1] + '</td></tr>');
+    $('#data-table').append('<tr><td>Tuition</td><td>' + schoolPrimaryArray[2] + schoolSecondaryArray[2] + '</td></tr>');
+    $('#data-table').append('<tr><td>Average SAT Score</td><td>' + schoolPrimaryArray[3] + schoolSecondaryArray[3] + '</td></tr>');
+    $('#data-table').append('<tr><td>Six Year Graduation Rate</td><td>' + schoolPrimaryArray[4] + schoolSecondaryArray[4] + '%</td></tr>');
+    $('#data-table').append('<tr><td>Eight Year Graduation Rate</td><td>' + schoolPrimaryArray[5] + schoolSecondaryArray[5]+ '%</td></tr>');
+    $('#data-table').append('<tr><td>Percentage of Student Receiving Pell Grants</td><td>' + schoolPrimaryArray[6] + schoolSecondaryArray[6] + '%</td></tr>');
+    $('#data-table').append('<tr><td>Percentage of Student Receiving Federal Loans</td><td>' + schoolPrimaryArray[7] + schoolSecondaryArray[7] + '%</td></tr>');
+    $('#data-table').append('<tr><td>Median Debt of Graduates</td><td>' + schoolPrimaryArray[8] + schoolSecondaryArray[8] + '</td></tr>');
+    $('#data-table').append('<tr><td>Percentage of Students Returning After First Year</td><td>' + schoolPrimaryArray[9] + schoolSecondaryArray[9] + '%</td></tr>');
+    $('#data-table').append('<tr><td>Admissions Rate</td><td>' + schoolPrimaryArray[10] + schoolSecondaryArray[10] + '%</td></tr>');
+
+}
 function createVis()
 {
-    var school = allData[getParameterByName("s")];
-    var demo = demoData[getParameterByName("s")];
-    var par = parData[getParameterByName("s")];
-    var inc = incData[getParameterByName("s")];
-
-
-    $("#school-name-header").html(school.INSTNM);
-
-    $('#data-table').append('<tr><td>School Type</td><td>' + (school.CONTROL == 0 ? "Public" : "Private") + '</td></tr>');
-    $('#data-table').append('<tr><td>Total Undergraduates</td><td>' + school.UGDS + '</td></tr>');
-    $('#data-table').append('<tr><td>Tuition</td><td>' + accounting.formatMoney(school.TUITFTE) + '</td></tr>');
-    $('#data-table').append('<tr><td>Average SAT Score</td><td>' + school.SAT_AVG_ALL + '</td></tr>');
-    $('#data-table').append('<tr><td>Six Year Graduation Rate</td><td>' + Math.round(10000 * school.C150_4)/100 + '%</td></tr>');
-    $('#data-table').append('<tr><td>Eight Year Graduation Rate</td><td>' +Math.round(10000 *  school.C200_4)/100 + '%</td></tr>');
-    $('#data-table').append('<tr><td>Percentage of Student Receiving Pell Grants</td><td>' + Math.round(10000* school.PCTPELL)/100 + '%</td></tr>');
-    $('#data-table').append('<tr><td>Percentage of Student Receiving Federal Loans</td><td>' + Math.round(10000 * school.PCTFLOAN)/100 + '%</td></tr>');
-    $('#data-table').append('<tr><td>Median Debt of Graduates</td><td>' + accounting.formatMoney(school.GRAD_DEBT_MDN_SUPP) + '</td></tr>');
-    $('#data-table').append('<tr><td>Percentage of Students Returning After First Year</td><td>' + Math.round(10000 * school.RET_FT4)/100 + '%</td></tr>');
-    $('#data-table').append('<tr><td>Admissions Rate</td><td>' + Math.round(10000 *  school.ADM_RATE_ALL)/100 + '%</td></tr>');
+    var demo = demoData[schoolPrimary];
+    var par = parData[schoolPrimary];
+    var inc = incData[schoolPrimary];
 
     var make = true;
     for (var key in demo) {
@@ -303,3 +379,8 @@ function makePieChart(svg, data,key)
         .remove();
 }
 
+
+function updateSchool(schoolNumber, schoolData)
+{
+    console.log(schoolNumber, schoolData);
+}
