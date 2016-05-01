@@ -21,7 +21,7 @@ var choice2 = "C150_4";
 //create x scale
 var x = d3.scale.linear()
     .range([0, width]);
-    create y scale
+//create y scale
 var y = d3.scale.linear()
     .range([height, 0]);
     x axis function
