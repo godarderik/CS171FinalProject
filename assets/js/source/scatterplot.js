@@ -2,7 +2,7 @@
  * Created by erikgodard on 4/13/16.
  */
 
-// SVG drawing area
+//SVG drawing area
 var margin = {top: 40, right: 40, bottom: 60, left: 60};
 
 var width = 800 - margin.left - margin.right,
@@ -13,59 +13,50 @@ var svg = d3.select("#school-visualization").append("svg")
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-// Initializes Variables
+//Initializes Variables
 var data,start,end, name, category;
 var choice1 = "SAT_AVG_ALL";
 var choice2 = "C150_4";
 
-// create x scale
+//create x scale
 var x = d3.scale.linear()
     .range([0, width]);
-
-// create y scale
+    create y scale
 var y = d3.scale.linear()
     .range([height, 0]);
-
-// x axis function
+    x axis function
 var xAxis = d3.svg.axis()
     .scale(x)
     .orient("bottom");
-
-// y axis function
+    y axis function
 var yAxis = d3.svg.axis()
     .scale(y)
     .orient("left");
 
-// add x axis
+//add x axis
 var xDraw = svg.append("g")
     .attr("class", "axis x-axis")
     .attr("transform", "translate(0," + height + ")");
-
-// add y axis
+    add y axis
 var yDraw = svg.append("g")
     .attr("class", "axis y-axis");
-
-// make the tooltip
+    make the tooltip
 var tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 1]);
-
-// make the legend
+    make the legend
 var legend = svg.append("g")
     .attr("class", "legend")
     .attr("x", width - 65)
     .attr("y", 25)
     .attr("height", 100)
     .attr("width", 100);
-
-// Initialize data
-loadData();
-// Load CSV file
+//Initialize data
+loadData(); //Load CSV file
 function loadData() {
     d3.csv("data/data.csv", function (error, csv) {
         csv.forEach(function(d) {
-            // Convert numeric values to 'numbers'
+            //Convert numeric values to 'numbers'
             d.TUITFTE = +d.TUITFTE;
             d.INEXPFTE = +d.INEXPFTE;
             d.ADM_RATE_ALL = +d.ADM_RATE_ALL;
@@ -94,23 +85,22 @@ function loadData() {
             d.CONTROL = +d.CONTROL;
         });
 
-        // Store csv data in global variable
+        //Store csv data in global variable
         data = csv;
 
-        // Draw the visualization for the first time
+        //Draw the visualization for the first time
         updateVisualization();
     });}
 
-
-// Render visualization
+    Render visualization
 function updateVisualization() {
 
-    // create choice
+    create choice
     choice1 = $('input[name=var1]:checked').val()
     choice2 = $('input[name=var2]:checked').val()
     category = $('input[name=var3]:checked').val()
 
-    // redefine x and y domain
+    redefine x and y domain
     x.domain([0, d3.max(data, function (d) {
         return d[choice1];
     })]);
@@ -119,94 +109,94 @@ function updateVisualization() {
     })]);
 
 
-    // clear axis and make a new one
+    //clear axis and make a new one
     //xDraw.append("text")
-    //    .attr("x", 220)
-    //    .attr("y", 50)
-    //    .text(function(){
-    //        if (choice1 == "TUITFTE")
-    //        {
-    //            return "Tuition Expenditures per Student";
-    //        }
-    //        else if (choice1 == "INEXPFTE")
-    //        {
-    //            return "Instruction expenditures divided by students";
-    //        }
-    //        else if (choice1 == "ADM_RATE_ALL")
-    //        {
-    //            return "Total admission rate";
-    //        }
-    //        else if (choice1 == "SAT_AVG_ALL")
-    //        {
-    //            return "Average SAT score";
-    //        }
-    //        else if (choice1 == "UGDS")
-    //        {
-    //            return "Number of Undergraduate Students";
-    //        }
-    //        else if (choice1 == "PAR_ED_PCT_1STGEN")
-    //        {
-    //            return "Percent of students that are first generation";
-    //        }
-    //        else if (choice1 == "PCTFLOAN")
-    //        {
-    //            return "Percent of students receiving federal loans";
-    //        }
-    //        else if (choice1 == "GRAD_DEBT_MDN_SUPP")
-    //        {
-    //            return "Median debt for graduating students";
-    //        }
-    //        else if (choice1 == "C150_4")
-    //        {
-    //            return "Fraction of students who graduate with 150% of expected time";
-    //        }
+       .attr("x", 220)
+       .attr("y", 50)
+       .text(function(){
+           if (choice1 == "TUITFTE")
+           {
+               return "Tuition Expenditures per Student";
+           }
+           else if (choice1 == "INEXPFTE")
+           {
+               return "Instruction expenditures divided by students";
+           }
+           else if (choice1 == "ADM_RATE_ALL")
+           {
+               return "Total admission rate";
+           }
+           else if (choice1 == "SAT_AVG_ALL")
+           {
+               return "Average SAT score";
+           }
+           else if (choice1 == "UGDS")
+           {
+               return "Number of Undergraduate Students";
+           }
+           else if (choice1 == "PAR_ED_PCT_1STGEN")
+           {
+               return "Percent of students that are first generation";
+           }
+           else if (choice1 == "PCTFLOAN")
+           {
+               return "Percent of students receiving federal loans";
+           }
+           else if (choice1 == "GRAD_DEBT_MDN_SUPP")
+           {
+               return "Median debt for graduating students";
+           }
+           else if (choice1 == "C150_4")
+           {
+               return "Fraction of students who graduate with 150% of expected time";
+           }
     //});
 
-    // clear axis and make a new one
+    clear axis and make a new one
     //yDraw.append("text")
-    //    .attr("x", -300)
-    //    .attr("y", -52)
-    //    .attr("transform", "rotate(-90)")
-    //    .text(function(){
-    //        if (choice2 == "TUITFTE")
-    //        {
-    //            return "Tuition Expenditures per Student";
-    //        }
-    //        else if (choice2 == "INEXPFTE")
-    //        {
-    //            return "Instruction expenditures divided by students";
-    //        }
-    //        else if (choice2 == "ADM_RATE_ALL")
-    //        {
-    //            return "Total admission rate";
-    //        }
-    //        else if (choice2 == "SAT_AVG_ALL")
-    //        {
-    //            return "Average SAT score";
-    //        }
-    //        else if (choice2 == "UGDS")
-    //        {
-    //            return "Number of Undergraduate Students";
-    //        }
-    //        else if (choice2 == "PAR_ED_PCT_1STGEN")
-    //        {
-    //            return "Percent of students that are first generation";
-    //        }
-    //        else if (choice2 == "PCTFLOAN")
-    //        {
-    //            return "Percent of students receiving federal loans";
-    //        }
-    //        else if (choice2 == "GRAD_DEBT_MDN_SUPP")
-    //        {
-    //            return "Median debt for graduating students";
-    //        }
-    //        else if (choice2 == "C150_4")
-    //        {
-    //            return "Fraction of students who graduate with 150% of expected time";
-    //        }
-    //    });
+       .attr("x", -300)
+       .attr("y", -52)
+       .attr("transform", "rotate(-90)")
+       .text(function(){
+           if (choice2 == "TUITFTE")
+           {
+               return "Tuition Expenditures per Student";
+           }
+           else if (choice2 == "INEXPFTE")
+           {
+               return "Instruction expenditures divided by students";
+           }
+           else if (choice2 == "ADM_RATE_ALL")
+           {
+               return "Total admission rate";
+           }
+           else if (choice2 == "SAT_AVG_ALL")
+           {
+               return "Average SAT score";
+           }
+           else if (choice2 == "UGDS")
+           {
+               return "Number of Undergraduate Students";
+           }
+           else if (choice2 == "PAR_ED_PCT_1STGEN")
+           {
+               return "Percent of students that are first generation";
+           }
+           else if (choice2 == "PCTFLOAN")
+           {
+               return "Percent of students receiving federal loans";
+           }
+           else if (choice2 == "GRAD_DEBT_MDN_SUPP")
+           {
+               return "Median debt for graduating students";
+           }
+           else if (choice2 == "C150_4")
+           {
+               return "Fraction of students who graduate with 150% of expected time";
+           }
+       });
 
-    // call the tooltip
+    call the tooltip
     tip.html(function(d) {
             return "<strong>" + d.INSTNM + "<br></strong>";
         });
@@ -218,7 +208,7 @@ function updateVisualization() {
     circle.enter()
         .append("circle");
 
-    // adds circles
+    adds circles
     circle.transition()
         .attr("cx", function (d) { if(!isNaN(d[choice1]) && !isNaN(d[choice2]) && d[choice1] != 0 && d[choice2] != 0) {return x(d[choice1]);} })
         .attr("cy", function (d) { if(!isNaN(d[choice1]) && !isNaN(d[choice2]) && d[choice1] != 0 && d[choice2] != 0) {return y(d[choice2]);} })
