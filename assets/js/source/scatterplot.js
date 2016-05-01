@@ -24,7 +24,7 @@ var x = d3.scale.linear()
 //create y scale
 var y = d3.scale.linear()
     .range([height, 0]);
-    x axis function
+//x axis function
 var xAxis = d3.svg.axis()
     .scale(x)
     .orient("bottom");
@@ -37,14 +37,14 @@ var yAxis = d3.svg.axis()
 var xDraw = svg.append("g")
     .attr("class", "axis x-axis")
     .attr("transform", "translate(0," + height + ")");
-    add y axis
+//add y axis
 var yDraw = svg.append("g")
     .attr("class", "axis y-axis");
-    make the tooltip
+//make the tooltip
 var tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 1]);
-    make the legend
+//make the legend
 var legend = svg.append("g")
     .attr("class", "legend")
     .attr("x", width - 65)
@@ -92,15 +92,15 @@ function loadData() {
         updateVisualization();
     });}
 
-    Render visualization
+//Render visualization
 function updateVisualization() {
 
-    create choice
+    //create choice
     choice1 = $('input[name=var1]:checked').val()
     choice2 = $('input[name=var2]:checked').val()
     category = $('input[name=var3]:checked').val()
 
-    redefine x and y domain
+    //redefine x and y domain
     x.domain([0, d3.max(data, function (d) {
         return d[choice1];
     })]);
@@ -152,8 +152,8 @@ function updateVisualization() {
            }
     //});
 
-    clear axis and make a new one
-    //yDraw.append("text")
+    //clear axis and make a new one
+    yDraw.append("text")
        .attr("x", -300)
        .attr("y", -52)
        .attr("transform", "rotate(-90)")
@@ -196,7 +196,7 @@ function updateVisualization() {
            }
        });
 
-    call the tooltip
+    //call the tooltip
     tip.html(function(d) {
             return "<strong>" + d.INSTNM + "<br></strong>";
         });
@@ -208,7 +208,7 @@ function updateVisualization() {
     circle.enter()
         .append("circle");
 
-    adds circles
+    //adds circles
     circle.transition()
         .attr("cx", function (d) { if(!isNaN(d[choice1]) && !isNaN(d[choice2]) && d[choice1] != 0 && d[choice2] != 0) {return x(d[choice1]);} })
         .attr("cy", function (d) { if(!isNaN(d[choice1]) && !isNaN(d[choice2]) && d[choice1] != 0 && d[choice2] != 0) {return y(d[choice2]);} })
