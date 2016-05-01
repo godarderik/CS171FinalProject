@@ -42,7 +42,7 @@ var criteria = {
     },
     GRAD_DEBT_MDN_SUPP: {
         min: 0,
-        max: 200000
+        max: 100000
     },
     C150_4: {
         min: 0,
@@ -99,32 +99,19 @@ function loadData() {
                     filterData();
                     updateVis();
                 }
-            });
-    });
-    var a = Object.keys(criteria);
-
-    for (var i = 0; i < a.length; ++i)
-    {
-        $("#" + a[i]).bind("valuesChanged", function(e, data){
+            }).bind("change", function(e, data){
             updateCriteria(e,data);
             filterData();
+            console.log("here");
             //upper limit for map, switch to chloropleth if greater
-
-
-
-
-        });
-    };
-
-    //d3.select("public").on("change", updateVisualization);
-    //d3.select("private").on("change", updateVisualization);
-    //d3.select("public").on("womenonly", updateVisualization);
-    //d3.select("public").on("hbcu", updateVisualization);
-    //d3.select("public").on("change", updateVisualization);
-
-
-
-
+        }).slider("pips", {
+        rest: "label", 
+        step: (criteria[this.id]["max"] - criteria[this.id]["min"]) / 4,
+        first: 'label', 
+        label: 'label'
+    })
+    });
+    var a = Object.keys(criteria);
     // Load CSV file
     d3.csv("data/data.csv", function(data) {
         allData = data.filter(function(d,i) {
@@ -201,8 +188,6 @@ function filterData()
     var womenonly = ($("#womenonly").is(":checked")) ? "1" : "0";
     var hbcu = ($("#hbcu").is(":checked")) ? "1" : "0";
 
-    console.log(pub);
-
     currData = allData.filter(function(item)
     {
         out = true;
@@ -218,7 +203,6 @@ function filterData()
                 break;
             }
         }
-
         out = out && ((item["CONTROL"] == "1" && pub == "1") ||((item["CONTROL"] == "2" || item["CONTROL"] == "3") && priv == "1")|| (item["WOMENONLY"] == womenonly && womenonly == "1") || (item["HBCU"] == hbcu && hbcu == "1"));
         if (out == true)
         {
@@ -234,7 +218,6 @@ function filterData()
         stationMap.shouldDraw = true;
     }
     stationMap.data = currData;
-   console.log(currData.length);
 }
 
 function createVis() {
