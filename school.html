@@ -10,9 +10,12 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link href="assets/css/bootstrap.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/barchart.css" />
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 	</head>
 	<body class="no-sidebar">
 		<div id="page-wrapper">
@@ -44,24 +47,31 @@
 					<div class="container" id="main">
 
 						<!-- Content -->
-							<article id="content">
 								<header>
+										<input id="school-name-header" placeholder = "" style="font-size: 30pt; margin:auto; display: block; margin-bottom: 30px;">
+										<input id="compareschool" placeholder = "Compare To" style="font-size: 30pt; margin:auto; display: block;">
+								</header>
+								
+						<br>
+						<br>
+						<table id = "data-table">
+
 									<h2 id = "school-name-header"></h2>
 									<p>Learn more about the student demographics of a school!</p>
-								</header>
-							</article>
-
+						
 						<p>To learn more about a different school, visit the <a href="scatterplot.html">Make Scatterplot</a> or <a href="map.html">College Mapper</a> pages and select a different school.</p>
 
 						<table id = "data-table"></table>
 
-						<h3 id = "race">Student Body by Race</h3>
 						<div id = "school1-visualization"></div>
-						<h3 id = "education">Student Body by Parent's Level of Education</h3>
+						<br>
+						<br>
 						<div id = "school2-visualization"></div>
-						<h3 id = "income">Student Body by Parent's Income</h3>
+						<br>
+						<br>
 						<div id = "school3-visualization"></div>
-
+						<br>
+						<br>
 						</div>
 					</div>
 
@@ -85,12 +95,15 @@
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.dropotron.min.js"></script>
 			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/bootstrap.min.js"></script>
 			<script src="assets/js/accounting.min.js"></script>
 			<script src="assets/js/util.js"></script>
+			<script src="assets/js/jquery-ui.min.js"></script>
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 			<script src="assets/js/main.js"></script>
 			<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 			<script src="assets/js/school.js"></script>
+
 
 
 	</body>

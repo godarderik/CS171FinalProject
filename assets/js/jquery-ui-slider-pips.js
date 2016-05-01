@@ -501,14 +501,14 @@
             // if we want to trigger the original event based on which element
             // was clicked.
             slider.element
-                .off("mousedown.slider")
-                .on("mousedown.selectPip", function(e) {
+                .off( "mousedown.slider")
+                .on(  "mousedown.selectPip", function(e) {
 
                     var $target = $(e.target),
                         closest = getClosestHandle( $target.data("value") ),
                         $handle = $handles.eq( closest );
 
-                    $handle.addClass("ui-state-active");
+                   // $handle.addClass("ui-state-active");
 
                     if ( $target.is(".ui-slider-label") ) {
 
