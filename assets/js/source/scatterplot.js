@@ -110,7 +110,7 @@ function updateVisualization() {
 
 
     //clear axis and make a new one
-    //xDraw.append("text")
+    xDraw.append("text")
        .attr("x", 220)
        .attr("y", 50)
        .text(function(){
@@ -150,7 +150,7 @@ function updateVisualization() {
            {
                return "Fraction of students who graduate with 150% of expected time";
            }
-    //});
+    });
 
     //clear axis and make a new one
     yDraw.append("text")
