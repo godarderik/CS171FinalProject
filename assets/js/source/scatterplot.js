@@ -109,6 +109,9 @@ function updateVisualization() {
     })]);
 
 
+    $(".x-axis").empty();
+    $(".y-axis").empty();
+    yDraw.empty();
     //clear axis and make a new one
     xDraw.append("text")
        .attr("x", 220)
