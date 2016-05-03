@@ -10,7 +10,7 @@ The Make Scatterplot page allows users to discover nationwide trends across all 
 
 The School Visualization page allows users to see data about either one or two colleges in the form of a data table and pie charts or side-by-side segmented bar charts. This allows users to compare any two colleges on important metrics such as college student body make-ups and tuition break-downs. 
 
-For more details on features of Education Calibration, view the screencast here: https://www.youtube.com/watch?v=O40trHhf_Gw.
+For more details on features of Education Calibration, view the screencast here: https://www.youtube.com/watch?v=O40trHhf_Gw. or read our process book online at http://www.educationcalibration.site/processbook.html
 
 We are submitting 4 folders (assets, data, fonts, and images), 6 html files that are our code (barchart.html, home.html, index.html, map.html, scatterplot.html, school.html), and 4 text files (we wrote README.txt and datadescription.txt, and the other two are text files from the HTML5 UP template).
 
